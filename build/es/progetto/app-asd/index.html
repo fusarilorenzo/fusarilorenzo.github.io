@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>App Móvil para Club Deportivo Local - Ficha de Detalle</title>
+	<link rel="stylesheet" href="../../../static/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="main-layout">
+		
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				<a href="../../../it/progetto/app-asd/index.html" class="">IT</a>
+				<a href="../../../en/progetto/app-asd/index.html" class="">EN</a>
+				<a href="index.html" class="active">ES</a>
+				<a href="../../../de/progetto/app-asd/index.html" class="">DE</a>
+				<a href="../../../fr/progetto/app-asd/index.html" class="">FR</a>
+			</div>
+
+			<a href="../../index.html" class="btn-back">&larr; Volver al CV</a>
+			
+			<h1 class="typewriter" style="margin-top: 15px;">App Móvil para Club Deportivo Local</h1>
+			<p class="subtitle typewriter">Desarrollo Móvil</p>
+
+			<div class="contatti-box">
+				<p class="typewriter"><strong>Rol:</strong> Desarrollador Único / Full-Stack</p>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<h3 class="typewriter" style="font-size: 1rem; margin-bottom: 10px;">Tech Stack</h3>
+				<div class="skills-tags">
+					
+					<span class="tag typewriter">Swift</span>
+					
+					<span class="tag typewriter">Kotlin</span>
+					
+					<span class="tag typewriter">Firebase</span>
+					
+					<span class="tag typewriter">REST API</span>
+					
+					<span class="tag typewriter">Google Apps Script</span>
+					
+				</div>
+			</div>
+		</aside>
+
+		<main class="content-area">
+			
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Descripción del Proyecto</h2>
+				<p class="typewriter">Desarrollo y publicación de una aplicación móvil para un club deportivo amateur local, permitiendo a los atletas consultar sus resultados de la temporada actual, inscribirse en competiciones y ver los eventos del equipo. La gestión de datos por usuario se realiza mediante un código personal generado al crear la cuenta. Se utilizó Google Apps Script con JavaScript para interactuar con Google Sheets. La app fue desarrollada de forma nativa: Swift con SwiftUI para iOS/iPadOS y Kotlin con Jetpack Compose para Android.</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Características Principales</h2>
+				<ul class="styled-list">
+					
+					<li class="typewriter">Autenticación de usuarios y gestión de perfiles de atletas</li>
+					
+					<li class="typewriter">Notificaciones push para anuncios urgentes y competiciones</li>
+					
+					<li class="typewriter">Integración de calendario con eventos y entrenamientos</li>
+					
+					<li class="typewriter">Visualización de resultados de la temporada competitiva</li>
+					
+					<li class="typewriter">Inscripción en línea a competiciones</li>
+					
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+					
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+					
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
+							el.appendChild(cursor);
+							
+							charIndex++;
+
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
+							}
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
+						}
+					}
+
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+</body>
+</html>

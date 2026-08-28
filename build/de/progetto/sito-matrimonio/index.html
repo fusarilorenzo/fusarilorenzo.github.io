@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hochzeits-Web-App - Detailansicht</title>
+	<link rel="stylesheet" href="../../../static/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="main-layout">
+		
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				<a href="../../../it/progetto/sito-matrimonio/index.html" class="">IT</a>
+				<a href="../../../en/progetto/sito-matrimonio/index.html" class="">EN</a>
+				<a href="../../../es/progetto/sito-matrimonio/index.html" class="">ES</a>
+				<a href="index.html" class="active">DE</a>
+				<a href="../../../fr/progetto/sito-matrimonio/index.html" class="">FR</a>
+			</div>
+
+			<a href="../../index.html" class="btn-back">&larr; Zurück zum CV</a>
+			
+			<h1 class="typewriter" style="margin-top: 15px;">Hochzeits-Web-App</h1>
+			<p class="subtitle typewriter">Full-Stack-Webanwendungsentwicklung</p>
+
+			<div class="contatti-box">
+				<p class="typewriter"><strong>Rolle:</strong> Webentwickler &amp; Designer</p>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<h3 class="typewriter" style="font-size: 1rem; margin-bottom: 10px;">Tech Stack</h3>
+				<div class="skills-tags">
+					
+					<span class="tag typewriter">HTML5/CSS3</span>
+					
+					<span class="tag typewriter">JavaScript</span>
+					
+					<span class="tag typewriter">Python3.13</span>
+					
+					<span class="tag typewriter">Flask</span>
+					
+				</div>
+			</div>
+		</aside>
+
+		<main class="content-area">
+			
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Projektübersicht</h2>
+				<p class="typewriter">Erstellung einer maßgeschneiderten Webanwendung im Auftrag für eine Hochzeit. Die Website umfasst zwei Sprachseiten (Italienisch und Französisch), um alle Gäste problemlos zu erreichen. Das Design spiegelt das Piraten-Motto der Hochzeit durch spezielle Schriftarten und Hintergrundgrafiken im CSS wider. Die Textinhalte werden aus lokalen .txt-Dateien des Projekts ausgelesen. Der Text wird mit einem dynamischen &#39;Schreib-Effekt&#39; durch eine Piratenflagge dargestellt, die von einem JavaScript-Skript am Ende der HTML-Datei gesteuert wird.</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Hauptfunktionen</h2>
+				<ul class="styled-list">
+					
+					<li class="typewriter">Anpassungsfähiges Design für alle Endgeräte</li>
+					
+					<li class="typewriter">Kontrastreicher Header im Vergleich zum Hauptbereich</li>
+					
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+					
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+					
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
+							el.appendChild(cursor);
+							
+							charIndex++;
+
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
+							}
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
+						}
+					}
+
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+</body>
+</html>

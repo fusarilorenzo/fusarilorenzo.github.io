@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Application Web de Mariage - Fiche Détaillée</title>
+	<link rel="stylesheet" href="../../../static/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="main-layout">
+		
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				<a href="../../../it/progetto/sito-matrimonio/index.html" class="">IT</a>
+				<a href="../../../en/progetto/sito-matrimonio/index.html" class="">EN</a>
+				<a href="../../../es/progetto/sito-matrimonio/index.html" class="">ES</a>
+				<a href="../../../de/progetto/sito-matrimonio/index.html" class="">DE</a>
+				<a href="index.html" class="active">FR</a>
+			</div>
+
+			<a href="../../index.html" class="btn-back">&larr; Retour au CV</a>
+			
+			<h1 class="typewriter" style="margin-top: 15px;">Application Web de Mariage</h1>
+			<p class="subtitle typewriter">Développement Web App Full-Stack</p>
+
+			<div class="contatti-box">
+				<p class="typewriter"><strong>Rôle:</strong> Développeur Web &amp; Designer</p>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<h3 class="typewriter" style="font-size: 1rem; margin-bottom: 10px;">Tech Stack</h3>
+				<div class="skills-tags">
+					
+					<span class="tag typewriter">HTML5/CSS3</span>
+					
+					<span class="tag typewriter">JavaScript</span>
+					
+					<span class="tag typewriter">Python3.13</span>
+					
+					<span class="tag typewriter">Flask</span>
+					
+				</div>
+			</div>
+		</aside>
+
+		<main class="content-area">
+			
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Aperçu du Projet</h2>
+				<p class="typewriter">Réalisation d&#39;une application web sur mesure pour un mariage. Le site comprend deux pages (une en italien et une en français) afin d&#39;accueillir facilement tous les invités. Le style visuel rappelle le thème des pirates grâce à des polices personnalisées et des graphismes d&#39;arrière-plan en CSS. Les textes sont extraits de fichiers .txt locaux. L&#39;affichage du texte simule une écriture générée par un drapeau pirate, piloté par un script JavaScript placé en bas du fichier HTML.</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Fonctionnalités Principales</h2>
+				<ul class="styled-list">
+					
+					<li class="typewriter">Design adaptable à tous les types d&#39;écrans</li>
+					
+					<li class="typewriter">En-tête en contraste visuel avec le corps de la page</li>
+					
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+					
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+					
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
+							el.appendChild(cursor);
+							
+							charIndex++;
+
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
+							}
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
+						}
+					}
+
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+</body>
+</html>

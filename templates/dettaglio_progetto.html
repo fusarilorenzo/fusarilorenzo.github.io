@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ progetto.titolo }} - {{ labels.scheda_dettaglio if labels.scheda_dettaglio else 'Scheda Dettaglio' }}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="main-layout">
+		
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				<a href="{{ url_for('dettaglio_progetto', lang='it', id_progetto=progetto['id'] if progetto.id is not defined else progetto.id) }}" class="{% if current_lang == 'it' %}active{% endif %}">IT</a>
+				<a href="{{ url_for('dettaglio_progetto', lang='en', id_progetto=progetto['id'] if progetto.id is not defined else progetto.id) }}" class="{% if current_lang == 'en' %}active{% endif %}">EN</a>
+				<a href="{{ url_for('dettaglio_progetto', lang='es', id_progetto=progetto['id'] if progetto.id is not defined else progetto.id) }}" class="{% if current_lang == 'es' %}active{% endif %}">ES</a>
+				<a href="{{ url_for('dettaglio_progetto', lang='de', id_progetto=progetto['id'] if progetto.id is not defined else progetto.id) }}" class="{% if current_lang == 'de' %}active{% endif %}">DE</a>
+				<a href="{{ url_for('dettaglio_progetto', lang='fr', id_progetto=progetto['id'] if progetto.id is not defined else progetto.id) }}" class="{% if current_lang == 'fr' %}active{% endif %}">FR</a>
+			</div>
+
+			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back">&larr; {{ labels.torna_home if labels.torna_home else 'Torna al CV' }}</a>
+			
+			<h1 class="typewriter" style="margin-top: 15px;">{{ progetto.titolo }}</h1>
+			<p class="subtitle typewriter">{{ progetto.categoria }}</p>
+
+			<div class="contatti-box">
+				<p class="typewriter"><strong>{{ labels.ruolo if labels.ruolo else 'Ruolo' }}:</strong> {{ progetto.ruolo }}</p>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<h3 class="typewriter" style="font-size: 1rem; margin-bottom: 10px;">Tech Stack</h3>
+				<div class="skills-tags">
+					{% for tech in progetto.tecnologie %}
+					<span class="tag typewriter">{{ tech }}</span>
+					{% endfor %}
+				</div>
+			</div>
+		</aside>
+
+		<main class="content-area">
+			
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.panoramica_progetto if labels.panoramica_progetto else 'Panoramica del Progetto' }}</h2>
+				<p class="typewriter">{{ progetto.descrizione_completa }}</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.funzionalita_principali if labels.funzionalita_principali else 'Funzionalità Principali' }}</h2>
+				<ul class="styled-list">
+					{% for feat in progetto.funzionalita %}
+					<li class="typewriter">{{ feat }}</li>
+					{% endfor %}
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+					
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+					
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
+							el.appendChild(cursor);
+							
+							charIndex++;
+
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
+							}
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
+						}
+					}
+
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+</body>
+</html>

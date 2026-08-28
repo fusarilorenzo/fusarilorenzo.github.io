@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ labels.titolo_scheda }}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="body-404">
+
+	<div class="error-container liquid-glass">
+		<div class="pyramid-icon">
+			𓋹 𓀀 𓁀
+		</div>
+
+		<div class="error-code-wrapper">
+			<span class="sand-wind-digit digit-left">4</span>
+			<span class="sand-wind-digit digit-center"><i class="fa-solid fa-spider spider-icon"></i>0</span>
+			<span class="sand-wind-digit digit-right">4</span>
+		</div>
+
+		<h1 class="typewriter">{{ labels.titolo }}</h1>
+		<p class="typewriter subtitle-404">
+				{{ labels.sottotitolo }}
+		</p>
+
+		<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back-home">
+			<i class="fa-solid fa-ankh"></i> {{ labels.bottone }}
+		</a>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const speed = 20;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			const container = document.querySelector('.error-container');
+			const elements = container.querySelectorAll('.typewriter');
+			let elementIndex = 0;
+
+			function typeNextElement() {
+				if (elementIndex >= elements.length) return;
+
+				const el = elements[elementIndex];
+				const fullHTML = el.dataset.originalHtml;
+				
+				const cursor = document.createElement('span');
+				cursor.className = 'typewriter-cursor';
+				
+				el.innerHTML = '';
+				el.style.visibility = 'visible';
+				el.appendChild(cursor);
+
+				let charIndex = 0;
+				let isTag = false;
+				let currentHTML = '';
+
+				function typeChar() {
+					if (charIndex < fullHTML.length) {
+						let char = fullHTML.charAt(charIndex);
+
+						if (char === '<') isTag = true;
+						currentHTML += char;
+						if (char === '>') isTag = false;
+
+						el.innerHTML = currentHTML;
+						el.appendChild(cursor);
+						charIndex++;
+
+						if (isTag) {
+							typeChar();
+						} else {
+							setTimeout(typeChar, speed);
+						}
+					} else {
+						el.innerHTML = fullHTML;
+						elementIndex++;
+						setTimeout(typeNextElement, 30);
+					}
+				}
+
+				typeChar();
+			}
+
+			setTimeout(typeNextElement, 600);
+		});
+	</script>
+</body>
+</html>

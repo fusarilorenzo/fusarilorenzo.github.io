@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Site Web sur Commande - Fiche Détaillée</title>
+	<link rel="stylesheet" href="../../../static/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="main-layout">
+		
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				<a href="../../../it/progetto/sito-commissione/index.html" class="">IT</a>
+				<a href="../../../en/progetto/sito-commissione/index.html" class="">EN</a>
+				<a href="../../../es/progetto/sito-commissione/index.html" class="">ES</a>
+				<a href="../../../de/progetto/sito-commissione/index.html" class="">DE</a>
+				<a href="index.html" class="active">FR</a>
+			</div>
+
+			<a href="../../index.html" class="btn-back">&larr; Retour au CV</a>
+			
+			<h1 class="typewriter" style="margin-top: 15px;">Site Web sur Commande</h1>
+			<p class="subtitle typewriter">Développement Web Full-Stack</p>
+
+			<div class="contatti-box">
+				<p class="typewriter"><strong>Rôle:</strong> Développeur Web &amp; Designer</p>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<h3 class="typewriter" style="font-size: 1rem; margin-bottom: 10px;">Tech Stack</h3>
+				<div class="skills-tags">
+					
+					<span class="tag typewriter">HTML5/CSS3</span>
+					
+					<span class="tag typewriter">JavaScript</span>
+					
+					<span class="tag typewriter">WordPress</span>
+					
+				</div>
+			</div>
+		</aside>
+
+		<main class="content-area">
+			
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Aperçu du Projet</h2>
+				<p class="typewriter">Réalisation d&#39;une plateforme web personnalisée sur commande pour un client privé. Le site comprend un total de quatre pages (deux en italien et deux en anglais) sous forme de site vitrine. Conçu sur WordPress avec du code personnalisé (HTML et CSS pour le design, JavaScript pour accéder à la galerie interne WordPress). Les images ont été catégorisées à l&#39;aide de plugins de la communauté afin d&#39;éviter les conflits entre les langues.</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Fonctionnalités Principales</h2>
+				<ul class="styled-list">
+					
+					<li class="typewriter">Design responsive adapté à tous les appareils</li>
+					
+					<li class="typewriter">Optimisation SEO on-page pour les moteurs de recherche</li>
+					
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+					
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+					
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
+							el.appendChild(cursor);
+							
+							charIndex++;
+
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
+							}
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
+						}
+					}
+
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+</body>
+</html>

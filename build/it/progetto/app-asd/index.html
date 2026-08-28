@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>App Mobile per ASD Locale - Scheda Dettaglio</title>
+	<link rel="stylesheet" href="../../../static/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div class="main-layout">
+		
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				<a href="index.html" class="active">IT</a>
+				<a href="../../../en/progetto/app-asd/index.html" class="">EN</a>
+				<a href="../../../es/progetto/app-asd/index.html" class="">ES</a>
+				<a href="../../../de/progetto/app-asd/index.html" class="">DE</a>
+				<a href="../../../fr/progetto/app-asd/index.html" class="">FR</a>
+			</div>
+
+			<a href="../../index.html" class="btn-back">&larr; Torna al CV</a>
+			
+			<h1 class="typewriter" style="margin-top: 15px;">App Mobile per ASD Locale</h1>
+			<p class="subtitle typewriter">Sviluppo Mobile</p>
+
+			<div class="contatti-box">
+				<p class="typewriter"><strong>Ruolo:</strong> Sviluppatore Sole / Full-Stack</p>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<h3 class="typewriter" style="font-size: 1rem; margin-bottom: 10px;">Tech Stack</h3>
+				<div class="skills-tags">
+					
+					<span class="tag typewriter">Swift</span>
+					
+					<span class="tag typewriter">Kotlin</span>
+					
+					<span class="tag typewriter">Firebase</span>
+					
+					<span class="tag typewriter">REST API</span>
+					
+					<span class="tag typewriter">Google Apps Script</span>
+					
+				</div>
+			</div>
+		</aside>
+
+		<main class="content-area">
+			
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Panoramica del Progetto</h2>
+				<p class="typewriter">Scrittura e pubblicazione di un&#39;applicazione mobile per un&#39;associazione sportiva dillettantistica locale per permettere agli atleti di poter sempre vedere i loro risultati nell&#39;anno sportivo in corso, iscriversi alle gare, vedere tutti gli eventi della loro squadra. Gestione dei dati collegati all&#39;utente con un codice personale generato dal codice alla creazione dell&#39;account. Per comunicare con i servizi Fogli Google è stato usato Google Apps Script con il linguaggio JavaScript. L&#39;applicazione è stata creata usando due linguaggi di codice: per iOS e iPadOS è stato usato Swift con il framework SwiftUI, per Android è stato usato Kotlin con il framework Jetpack Compose.</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">Funzionalità Principali</h2>
+				<ul class="styled-list">
+					
+					<li class="typewriter">Autenticazione utenti e gestione profili atleti</li>
+					
+					<li class="typewriter">Notifiche push per comunicazioni urgenti e gare</li>
+					
+					<li class="typewriter">Integrazione calendario con eventi ed allenamenti</li>
+					
+					<li class="typewriter">Visualizzazione dei risultati dell&#39;anno agonistico</li>
+					
+					<li class="typewriter">Possibilità di iscrizione alle gare</li>
+					
+				</ul>
+			</section>
+		</main>
+	</div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+					
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+					
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
+							el.appendChild(cursor);
+							
+							charIndex++;
+
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
+							}
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
+						}
+					}
+
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+</body>
+</html>
