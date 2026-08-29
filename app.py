@@ -855,7 +855,7 @@ def home_default():
 	cv_selezionato = LANGUAGES_MAP['en']
 	label_selezionato = LABELS_HOME.get('en', LABELS_HOME['en'])
 	achievements_preview = ACHIEVEMENTS_DATA[:3]
-	label_achievements = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
+	label_achievements = LABELS_ACHIEVEMENTS['en']
 	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en', achievements=achievements_preview, labels_achievements=label_achievements)
 
 @app.route('/<lang>/')
@@ -867,7 +867,7 @@ def home(lang):
 	label_selezionato = LABELS_HOME.get(lang, LABELS_HOME['en'])
 	achievements_preview = ACHIEVEMENTS_DATA[:3]
 	label_achievements = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
-	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en', achievements=achievements_preview, labels_achievements=label_achievements)
+	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang=lang, achievements=achievements_preview, labels_achievements=label_achievements)
 
 @app.route('/<lang>/progetto/<id_progetto>/')
 def dettaglio_progetto(lang, id_progetto):
