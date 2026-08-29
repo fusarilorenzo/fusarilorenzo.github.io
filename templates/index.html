@@ -95,13 +95,13 @@
 						<div class="container">
 							<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
 								<div>
-									<h2 class="section-title mb-1">
-										<i class="fa-brands fa-microsoft"></i> {{ labels_achievements.titolo_pagina }}
+									<h2 class="section-title mb-1 typewriter">
+										<i class="fa-brands fa-microsoft typewriter"></i> {{ labels_achievements.titolo_pagina }}
 									</h2>
-									<p class="text-muted mb-0">{{ labels_achievements.sottotitolo }}</p>
+									<p class="text-muted mb-0 typewriter">{{ labels_achievements.sottotitolo }}</p>
 								</div>
 								
-								<a href="{{ url_for('achievements', lang=current_lang) }}" class="btn-see-all">
+								<a href="{{ url_for('achievements', lang=current_lang) }}" class="btn-see-all typewriter">
 									{{ labels_achievements.button }} <i class="fa-solid fa-arrow-right"></i>
 								</a>
 							</div>
@@ -110,22 +110,22 @@
 								{% for item in achievements %}
 								<div class="achievement-card liquid-glass">
 									<div class="badge-header">
-										<span class="official-tag">
-											<i class="fa-brands fa-microsoft"></i> {{ labels_achievements.ufficiale_badge }}
+										<span class="official-tag typewriter">
+											<i class="fa-brands fa-microsoft typewriter"></i> {{ labels_achievements.ufficiale_badge }}
 										</span>
-										<span class="badge-date">{{ item.data }}</span>
+										<span class="badge-date typewriter">{{ item.data }}</span>
 									</div>
 
 									<div class="badge-body">
 										<div class="badge-icon-wrapper">
-											<i class="fa-brands {{ item.badge_icon }}"></i>
+											<i class="fa-brands {{ item.badge_icon }} typewriter"></i>
 										</div>
-										<h3 class="achievement-title">{{ item.titolo }}</h3>
-										<span class="achievement-category">{{ item.categoria }}</span>
+										<h3 class="achievement-title typewriter">{{ item.titolo }}</h3>
+										<span class="achievement-category typewriter">{{ item.categoria }}</span>
 									</div>
 
 									<div class="badge-footer">
-										<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify">
+										<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
 											{{ labels_achievements.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
 										</a>
 									</div>

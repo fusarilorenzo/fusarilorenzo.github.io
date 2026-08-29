@@ -14,30 +14,30 @@
 
 	<main class="container py-5">
 		<header class="text-center mb-5">
-			<h1 class="page-title"><i class="fa-brands fa-microsoft"></i> {{ labels.titolo_pagina }}</h1>
-			<p class="page-subtitle">{{ labels.sottotitolo }}</p>
+			<h1 class="page-title typewriter"><i class="fa-brands fa-microsoft"></i> {{ labels.titolo_pagina }}</h1>
+			<p class="page-subtitle typewriter">{{ labels.sottotitolo }}</p>
 		</header>
 
 		<div class="achievements-grid">
 			{% for item in achievements %}
 			<div class="achievement-card liquid-glass">
 				<div class="badge-header">
-					<span class="official-tag">
+					<span class="official-tag typewriter">
 						<i class="fa-brands fa-microsoft"></i> {{ labels.ufficiale_badge }}
 					</span>
-					<span class="badge-date">{{ item.data }}</span>
+					<span class="badge-date typewriter">{{ item.data }}</span>
 				</div>
 
 				<div class="badge-body">
 					<div class="badge-icon-wrapper">
-						<i class="fa-brands {{ item.badge_icon }} badge-icon"></i>
+						<i class="fa-brands {{ item.badge_icon }} badge-icon typewriter"></i>
 					</div>
-					<h2 class="achievement-title">{{ item.titolo }}</h2>
-					<span class="achievement-category">{{ item.categoria }}</span>
+					<h2 class="achievement-title typewriter">{{ item.titolo }}</h2>
+					<span class="achievement-category typewriter">{{ item.categoria }}</span>
 				</div>
 
 				<div class="badge-footer">
-					<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify">
+					<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
 						{{ labels.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
 					</a>
 				</div>
@@ -46,11 +46,71 @@
 		</div>
 
 		<div class="text-center mt-5">
-			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back">
+			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back typewriter">
 				<i class="fa-solid fa-arrow-left"></i> Home
 			</a>
 		</div>
 	</main>
+	
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const speed = 15;
+			const elements = document.querySelectorAll('.typewriter');
 
+			elements.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			let elementIndex = 0;
+
+			function typeNextElement() {
+				if (elementIndex >= elements.length) return;
+
+				const el = elements[elementIndex];
+				const fullHTML = el.dataset.originalHtml;
+				
+				const cursor = document.createElement('span');
+				cursor.className = 'typewriter-cursor';
+				
+				el.innerHTML = '';
+				el.style.visibility = 'visible';
+				el.appendChild(cursor);
+
+				let charIndex = 0;
+				let isTag = false;
+				let currentHTML = '';
+
+				function typeChar() {
+					if (charIndex < fullHTML.length) {
+						let char = fullHTML.charAt(charIndex);
+
+						if (char === '<') isTag = true;
+						currentHTML += char;
+						if (char === '>') isTag = false;
+
+						el.innerHTML = currentHTML;
+						el.appendChild(cursor);
+						
+						charIndex++;
+
+						if (isTag) {
+							typeChar();
+						} else {
+							setTimeout(typeChar, speed);
+						}
+					} else {
+						el.innerHTML = fullHTML;
+						elementIndex++;
+						setTimeout(typeNextElement, 20);
+					}
+				}
+
+				typeChar();
+			}
+
+			typeNextElement();
+		});
+	</script>
 </body>
 </html>

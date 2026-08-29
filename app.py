@@ -831,7 +831,7 @@ ACHIEVEMENTS_DATA = [
 	{"id": "b15", "titolo": "Introduction to GitHub's products", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/8VTJERCW?sharingId=B2FB6AE8EAE1BC15"},
 	{"id": "b16", "titolo": "Introduction to GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/3ZDBVTAH?sharingId=B2FB6AE8EAE1BC15"},
 	{"id": "b17", "titolo": "Introduction to Git", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/JHZ78AJT?sharingId=B2FB6AE8EAE1BC15"},
-	{"id": "b18", "titolo": "Write your first C# code", "badge_icon": "fa-windows", "categoria": "Microsoft C# Code Language", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/EGF3AHZP?sharingId=B2FB6AE8EAE1BC15"}
+	{"id": "b18", "titolo": "Write your first C# code", "badge_icon": "fa-microsoft", "categoria": "Microsoft C# Code Language", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/EGF3AHZP?sharingId=B2FB6AE8EAE1BC15"}
 ]
 
 LANGUAGES_MAP = {
