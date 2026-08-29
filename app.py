@@ -2,6 +2,44 @@ from flask import Flask, render_template, abort, redirect, url_for, request
 
 app = Flask(__name__)
 
+LABELS_ACHIEVEMENTS = {
+	"it": {
+        "titolo_pagina": "Achievement Microsoft Learn",
+        "sottotitolo": "Certificazioni e traguardi formativi riconosciuti ufficialmente da Microsoft.",
+        "bottone_verifica": "Vedi su Microsoft Learn",
+        "ufficiale_badge": "Badge Ufficiale Microsoft",
+        "button": "Vedi Tutti"
+    },
+    "en": {
+        "titolo_pagina": "Microsoft Learn Achievements",
+        "sottotitolo": "Certifications and learning milestones officially recognized by Microsoft.",
+        "bottone_verifica": "View on Microsoft Learn",
+        "ufficiale_badge": "Official Microsoft Badge",
+        "button": "View All"
+    },
+    "es": {
+        "titolo_pagina": "Logros de Microsoft Learn",
+        "sottotitolo": "Certificaciones y logros de aprendizaje reconocidos oficialmente por Microsoft.",
+        "bottone_verifica": "Ver en Microsoft Learn",
+        "ufficiale_badge": "Insignia Oficial de Microsoft",
+        "button": "Ver Todo"
+    },
+    "de": {
+        "titolo_pagina": "Microsoft Learn Erfolge",
+        "sottotitolo": "Offiziell von Microsoft anerkannte Zertifizierungen und Lernerfolge.",
+        "bottone_verifica": "Auf Microsoft Learn ansehen",
+        "ufficiale_badge": "Offizielles Microsoft-Badge",
+        "button": "Alle Anzeigen"
+    },
+    "fr": {
+        "titolo_pagina": "Réussites Microsoft Learn",
+        "sottotitolo": "Certifications et étapes d'apprentissage officiellement reconnues par Microsoft.",
+        "bottone_verifica": "Voir sur Microsoft Learn",
+        "ufficiale_badge": "Badge Officiel Microsoft",
+        "button": "Tout Voir"
+    }
+}
+
 LABELS_404 = {
     "it": {
         "titolo_scheda": "404 - Pagina Non Trovata",
@@ -418,7 +456,8 @@ cv_data_it = {
 		{"nome": "GitHub", "url": "https://github.com/fusarilorenzo", "icona_class": "fa-brands fa-github"},
 		{"nome": "ORCID", "url": "https://orcid.org/0009-0007-4723-2887", "icona_class": "fa-brands fa-orcid"},
 		{"nome": "Zenodo", "url": "https://zenodo.org/search?q=metadata.creators.person_or_org.name%3A%22Fusari%2C%20Lorenzo%22&l=list&p=1&s=10&sort=bestmatch", "icona_class": "fa-solid fa-box-archive"},
-		{"nome": "Google Scholar", "url": "https://scholar.google.com/citations?hl=it&user=QRnhSWIAAAAJ", "icona_class": "fa-solid fa-graduation-cap"}
+		{"nome": "Google Scholar", "url": "https://scholar.google.com/citations?hl=it&user=QRnhSWIAAAAJ", "icona_class": "fa-solid fa-graduation-cap"},
+		{"nome": "Microsoft Learn", "url": "https://learn.microsoft.com/en-us/users/lorenzofusari-0956/", "icona_class": "fa-brands fa-microsoft"}
 	],
 	"lingue": [
 		{"lingua": "Italiano", "livello": "Madrelingua", "dettaglio": "Lingua principale"},
@@ -771,6 +810,30 @@ cv_data_fr = {
     ]
 }
 
+ACHIEVEMENTS_DATA = [
+	{"id": "t01", "titolo": "GitHub Foundations 2 of 2", "badge_icon": "fa-github", "categoria": "GitHub Learning Paths", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/9AK44T9U?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "t02", "titolo": "GitHub foundamentals - Administration basics and prodeatures Part 1 of 2", "badge_icon": "fa-github", "categoria": "GitHub Learning Paths", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/9AK44YTU?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "t03", "titolo": "GitHub Foundations Part 1 of 2", "badge_icon": "fa-github", "categoria": "GitHub Learning Paths", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/FEL5SG9X?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b01", "titolo": "Using GitHub Copilot with Python", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/FEL559NX?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b02", "titolo": "Search and organize repository history by using GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/3ZDBBJLH?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b03", "titolo": "Manage repository changes by using pull requests on GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/9AK4448U?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b04", "titolo": "Authenticate and authorize user identities on GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/H2JDDPW8?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b05", "titolo": "Introduction to GitHub administration", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/8VTJJZLW?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b06", "titolo": "Maintain a secure repository using GitHub best practices", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/NQ5SS73F?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b07", "titolo": "Manage an InnerSource program by using GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/VS8H3VXM?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b08", "titolo": "Contribute to an open-source project on GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/8VTJD9MW?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b09", "titolo": "Communicate effectively nHub usig Markdown", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/H2JDBT58?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b10", "titolo": "Manage your work with GitHub Projects", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/D37AXW3J?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b11", "titolo": "Code with GitHub Codespaces", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/4CYX8R7K?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b12", "titolo": "Introduction to GitHub Copilot", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/U7BKQKW3?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b13", "titolo": "Responsible AI with GitHub Copilot", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/9AK4MACU?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b14", "titolo": "Configure code scanning on GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/9AK4MNSU?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b15", "titolo": "Introduction to GitHub's products", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/8VTJERCW?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b16", "titolo": "Introduction to GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/3ZDBVTAH?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b17", "titolo": "Introduction to Git", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/JHZ78AJT?sharingId=B2FB6AE8EAE1BC15"},
+	{"id": "b18", "titolo": "Write your first C# code", "badge_icon": "fa-windows", "categoria": "Microsoft C# Code Language", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/EGF3AHZP?sharingId=B2FB6AE8EAE1BC15"}
+]
+
 LANGUAGES_MAP = {
 	"it": cv_data_it,
 	"en": cv_data_en,
@@ -791,7 +854,9 @@ LANGUAGES_MAP_PROGETTI = {
 def home_default():
 	cv_selezionato = LANGUAGES_MAP['en']
 	label_selezionato = LABELS_HOME.get('en', LABELS_HOME['en'])
-	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en')
+	achievements_preview = ACHIEVEMENTS_DATA[:3]
+	label_achievements = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
+	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en', achievements=achievements_preview, labels_achievements=label_achievements)
 
 @app.route('/<lang>/')
 def home(lang):
@@ -800,7 +865,9 @@ def home(lang):
 	
 	cv_selezionato = LANGUAGES_MAP[lang]
 	label_selezionato = LABELS_HOME.get(lang, LABELS_HOME['en'])
-	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang=lang)
+	achievements_preview = ACHIEVEMENTS_DATA[:3]
+	label_achievements = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
+	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en', achievements=achievements_preview, labels_achievements=label_achievements)
 
 @app.route('/<lang>/progetto/<id_progetto>/')
 def dettaglio_progetto(lang, id_progetto):
@@ -816,6 +883,16 @@ def dettaglio_progetto(lang, id_progetto):
 	label_selezionato = LABELS_PROGETTI.get(lang, LABELS_PROGETTI['en'])
 	return render_template('dettaglio_progetto.html', progetto=progetto, labels=label_selezionato, cv=cv_selezionato, current_lang=lang)
 	
+@app.route('/<lang>/achievements/')
+def achievements(lang):
+	if lang not in LANGUAGES_MAP:
+		return redirect(url_for('achievements', lang='en'))
+		
+	cv_selezionato = LANGUAGES_MAP[lang]
+	labels = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
+	
+	return render_template('achievements.html', achievements=ACHIEVEMENTS_DATA, cv=cv_selezionato, labels=labels, current_lang=lang)
+
 @app.errorhandler(404)
 def page_not_found(e):
 	path_parts = request.path.strip('/').split('/')

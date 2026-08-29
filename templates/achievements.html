@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ labels.titolo_pagina }}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="body-achievements">
+
+	<main class="container py-5">
+		<header class="text-center mb-5">
+			<h1 class="page-title"><i class="fa-brands fa-microsoft"></i> {{ labels.titolo_pagina }}</h1>
+			<p class="page-subtitle">{{ labels.sottotitolo }}</p>
+		</header>
+
+		<div class="achievements-grid">
+			{% for item in achievements %}
+			<div class="achievement-card liquid-glass">
+				<div class="badge-header">
+					<span class="official-tag">
+						<i class="fa-brands fa-microsoft"></i> {{ labels.ufficiale_badge }}
+					</span>
+					<span class="badge-date">{{ item.data }}</span>
+				</div>
+
+				<div class="badge-body">
+					<div class="badge-icon-wrapper">
+						<i class="fa-brands {{ item.badge_icon }} badge-icon"></i>
+					</div>
+					<h2 class="achievement-title">{{ item.titolo }}</h2>
+					<span class="achievement-category">{{ item.categoria }}</span>
+				</div>
+
+				<div class="badge-footer">
+					<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify">
+						{{ labels.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+					</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+		<div class="text-center mt-5">
+			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back">
+				<i class="fa-solid fa-arrow-left"></i> Home
+			</a>
+		</div>
+	</main>
+
+</body>
+</html>
