@@ -17,6 +17,12 @@
 			<h1 class="page-title typewriter"><i class="fa-brands fa-microsoft"></i> {{ labels.titolo_pagina }}</h1>
 			<p class="page-subtitle typewriter">{{ labels.sottotitolo }}</p>
 		</header>
+		
+		<div class="text-center mt-5">
+			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back typewriter">
+				<i class="fa-solid fa-arrow-left"></i> Home
+			</a>
+		</div>
 
 		<div class="achievements-grid">
 			{% for item in achievements %}
@@ -45,11 +51,6 @@
 			{% endfor %}
 		</div>
 
-		<div class="text-center mt-5">
-			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back typewriter">
-				<i class="fa-solid fa-arrow-left"></i> Home
-			</a>
-		</div>
 	</main>
 	
 	<script>
