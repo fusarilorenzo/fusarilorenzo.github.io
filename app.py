@@ -1016,6 +1016,8 @@ ACHIEVEMENTS_DATA = [
     {"id": "b16", "titolo": "Introduction to GitHub", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/3ZDBVTAH?sharingId=B2FB6AE8EAE1BC15"},
     {"id": "b17", "titolo": "Introduction to Git", "badge_icon": "fa-github", "categoria": "GitHub", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/JHZ78AJT?sharingId=B2FB6AE8EAE1BC15"},
     {"id": "b18", "titolo": "Write your first C# code", "badge_icon": "fa-microsoft", "categoria": "Microsoft C# Code Language", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/EGF3AHZP?sharingId=B2FB6AE8EAE1BC15"},
+    {"id": "i01", "titolo": "Exploring Emerging Tech", "badge_icon": "fa-solid fa-award", "categoria": "IBM SkillsBuild", "ente": "ibm", "data": "2026-11-03", "link": "https://www.credly.com/go/RPObDr24"},
+    {"id": "i02", "titolo": "Data Literacy", "badge_icon": "fa-solid fa-award", "categoria": "IBM SkillsBuild", "ente": "ibm", "data": "2026-11-04", "link": "https://www.credly.com/go/By91NfuA"},
 ]
 
 # Enti / piattaforme: nome mostrato e icona. Per aggiungerne uno basta una riga.
