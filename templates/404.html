@@ -1,18 +1,9 @@
+{% extends "base.html" %}
 
-<!DOCTYPE html>
-<html lang="{{ current_lang }}">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ labels.titolo_scheda }}</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body class="body-404">
+{% block title %}{{ labels.titolo_scheda }}{% endblock %}
+{% block body_class %}body-404{% endblock %}
 
+{% block content %}
 	<div class="error-container liquid-glass">
 		<div class="pyramid-icon">
 			𓋹 𓀀 𓁀
@@ -33,7 +24,9 @@
 			<i class="fa-solid fa-ankh"></i> {{ labels.bottone }}
 		</a>
 	</div>
+{% endblock %}
 
+{% block scripts %}
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
 			const speed = 20;
@@ -53,10 +46,10 @@
 
 				const el = elements[elementIndex];
 				const fullHTML = el.dataset.originalHtml;
-				
+
 				const cursor = document.createElement('span');
 				cursor.className = 'typewriter-cursor';
-				
+
 				el.innerHTML = '';
 				el.style.visibility = 'visible';
 				el.appendChild(cursor);
@@ -95,5 +88,4 @@
 			setTimeout(typeNextElement, 600);
 		});
 	</script>
-</body>
-</html>
+{% endblock %}

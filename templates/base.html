@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}"{% if is_root %} data-root{% endif %}>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="color-scheme" content="light dark">
+	<title>{% block title %}{{ cv.nome }}{% endblock %}</title>
+	<script>
+		/* Tema e lingua: eseguito subito, prima del disegno della pagina (niente "flash") */
+		(function () {
+			try {
+				var root = document.documentElement;
+				var theme = localStorage.getItem('theme');
+				if (theme !== 'light' && theme !== 'dark') {
+					theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				}
+				root.setAttribute('data-theme', theme);
+
+				/* Solo sulla pagina radice "/": vai alla lingua scelta l'ultima volta (o a quella del browser) */
+				if (root.hasAttribute('data-root')) {
+					var urls = { {% for l in langs %}"{{ l }}": "{{ url_for('home', lang=l) }}"{% if not loop.last %}, {% endif %}{% endfor %} };
+					var l = localStorage.getItem('lang');
+					if (!urls[l]) { l = (navigator.language || 'en').slice(0, 2).toLowerCase(); }
+					if (urls[l] && l !== 'en') { location.replace(urls[l]); }
+				}
+			} catch (e) {}
+		})();
+	</script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+	<button type="button" id="theme-toggle" class="theme-toggle" aria-label="{{ ui.tema }}" title="{{ ui.tema }}">
+		<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+	</button>
+
+	{% block content %}{% endblock %}
+
+	<script>
+		(function () {
+			document.getElementById('theme-toggle').addEventListener('click', function () {
+				var root = document.documentElement;
+				var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+				root.setAttribute('data-theme', next);
+				try { localStorage.setItem('theme', next); } catch (e) {}
+			});
+
+			/* Ricorda l'ultima lingua scelta con i pulsanti IT/EN/ES/DE/FR */
+			document.addEventListener('click', function (e) {
+				var a = e.target.closest ? e.target.closest('[data-lang]') : null;
+				if (a) { try { localStorage.setItem('lang', a.getAttribute('data-lang')); } catch (err) {} }
+			});
+		})();
+	</script>
+	{% block scripts %}{% endblock %}
+</body>
+</html>

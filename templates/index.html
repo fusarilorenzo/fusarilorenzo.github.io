@@ -1,301 +1,291 @@
-<!DOCTYPE html>
-<html lang="{{ current_lang }}">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{{ cv.nome }}</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    </head>
-    <body>
-		<div class="main-layout">
-				<aside class="sidebar liquid-glass">
-					<div class="lang-switcher">
-						<a href="{{ url_for('home', lang='it') }}" class="{% if current_lang == 'it' %}active{% endif %}">IT</a>
-						<a href="{{ url_for('home', lang='en') }}" class="{% if current_lang == 'en' %}active{% endif %}">EN</a>
-						<a href="{{ url_for('home', lang='es') }}" class="{% if current_lang == 'es' %}active{% endif %}">ES</a>
-						<a href="{{ url_for('home', lang='de') }}" class="{% if current_lang == 'de' %}active{% endif %}">DE</a>
-						<a href="{{ url_for('home', lang='fr') }}" class="{% if current_lang == 'fr' %}active{% endif %}">FR</a>
-					</div>
-					
-					<div class="profile-frame">
-						<div class="avatar-placeholder">
-							<span>LF</span>
-						</div>
-					</div>
-					
-					<h1 class="typewriter">{{ cv.nome }}</h1>
-					<p class="subtitle typewriter">{{ labels.occupazione }}</p>
-					
-					<div class="contatti-box">
-						<p class="typewriter">{{ cv.citta }}</p>
-						<p class="typewriter"><a href="tel:{{ cv.telefono }}">{{ cv.telefono }}</a></p>
-						<p class="typewriter"><a href="mailto:{{ cv.email }}">{{ cv.email }}</a></p>
-					</div>
-					
-					<div class="contatti-box" style="margin-top: 15px;">
-						{% for s in cv.social %}
-						<p class="typewriter">
-							<i class="{{ s.icona_class }}"></i>
-							<a href="{{ s.url }}" target= "_blank" rel="noopener noreferrer">{{ s.nome }}</a>
-						</p>
-						{% endfor %}
-					</div>
-				</aside>
+{% extends "base.html" %}
 
-				<main class="content-area">
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.profilo }}</h2>
-						<p class="typewriter">{{ cv.profilo }}</p>
-					</section>
-					
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.lingue }}</h2>
-						<div class="languages-grid">
-							{% for l in cv.lingue %}
-							<div class="progetto-item">
-								<div class="language-header">
-									<span class="language-name typewriter"><strong>{{ l.lingua }}</strong></span>
-									<span class="language-level badge-accent typewriter">{{ l.livello }}</span>
-								</div>
-								<p class="language-detail typewriter">{{ l.dettaglio }}</p>
-							</div>
-							{% endfor %}
-						</div>
-					</section>
-
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.progetti }}</h2>
-						<div class="progetti-grid">
-							{% for progetto in cv.progetti %}
-							<div class="progetto-item">
-								<h3 class="typewriter"><a href="{{ url_for('dettaglio_progetto', lang=current_lang, id_progetto=progetto.id) }}">{{ progetto.titolo }}</a></h3>
-								<p class="typewriter">{{ progetto.descrizione_breve }}</p>
-								<a class="link-dettaglio" href="{{ url_for('dettaglio_progetto', lang=current_lang, id_progetto=progetto.id) }}">
-									{{ labels.vedi_dettaglio }}
-								</a>
-							</div>
-							{% endfor %}
-						</div>
-					</section>
-
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.competizioni }}</h2>
-						<ul class="styled-list">
-							{% for gara in cv.competizioni %}
-							<li class="typewriter">{{ gara }}</li>
-							{% endfor %}
-						</ul>
-					</section>
-					
-					<section class="card liquid-glass section-achievements my-5">
-						<div class="container">
-							<div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-								<div>
-									<h2 class="section-title mb-1 typewriter">
-										<i class="fa-brands fa-microsoft typewriter"></i> {{ labels_achievements.titolo_pagina }}
-									</h2>
-									<p class="text-muted mb-0 typewriter">{{ labels_achievements.sottotitolo }}</p>
-								</div>
-								
-								<a href="{{ url_for('achievements', lang=current_lang) }}" class="btn-see-all typewriter">
-									{{ labels_achievements.button }} <i class="fa-solid fa-arrow-right"></i>
-								</a>
-							</div>
-
-							<div class="achievements-preview-row">
-								{% for item in achievements %}
-								<div class="achievement-card liquid-glass">
-									<div class="badge-header">
-										<span class="official-tag typewriter">
-											<i class="fa-brands fa-microsoft typewriter"></i> {{ labels_achievements.ufficiale_badge }}
-										</span>
-										<span class="badge-date typewriter">{{ item.data }}</span>
-									</div>
-
-									<div class="badge-body">
-										<div class="badge-icon-wrapper">
-											<i class="fa-brands {{ item.badge_icon }} typewriter"></i>
-										</div>
-										<h3 class="achievement-title typewriter">{{ item.titolo }}</h3>
-										<span class="achievement-category typewriter">{{ item.categoria }}</span>
-									</div>
-
-									<div class="badge-footer">
-										<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
-											{{ labels_achievements.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
-										</a>
-									</div>
-								</div>
-								{% endfor %}
-							</div>
-						</div>
-					</section>
-
-					<section class="card liquid-glass">
-						<div class="section-head">
-							<h2 class="typewriter">{{ labels_publications.titolo_pagina }}</h2>
-							<a href="{{ url_for('publications', lang=current_lang) }}" class="btn-see-all typewriter">
-								{{ labels_publications.button }} <i class="fa-solid fa-arrow-right"></i>
-							</a>
-						</div>
-						{% if publications %}
-						<div class="progetti-grid">
-							{% for pub in publications %}
-							<div class="progetto-item">
-								<h3 class="typewriter"><a href="{{ url_for('publications', lang=current_lang) }}">{{ pub.titolo }}</a></h3>
-								<p class="typewriter">{{ pub.anno }}{% if pub.sede %} · {{ pub.sede }}{% endif %}</p>
-							</div>
-							{% endfor %}
-						</div>
-						{% else %}
-						<p class="typewriter">{{ labels_publications.vuoto }}</p>
-						{% endif %}
-					</section>
-
-
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.certificazioni }}</h2>
-						<ul class="certificazioni-list">
-							{% for cert in cv.certificazioni %}
-							<li>
-								<div class="cert-info">
-									<strong class="typewriter">{{ cert.nome }}</strong>
-									<span class="cert-ente typewriter">— {{ cert.ente }}</span>
-								</div>
-								{% if cert.pdf %}
-									<a href="{{ url_for('static', filename='pdf/' + cert.pdf) }}" target="_blank" class="badge-pdf">
-										Report PDF
-									</a>
-								{% endif %}
-							</li>
-							{% endfor %}
-						</ul>
-					</section>
-
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.istruzione }}</h2>
-						<p class="scuola-titolo typewriter"><strong>{{ cv.istruzione }}</strong></p>
-						<p class="scuola-voti typewriter">{{ labels.profitto }}: {{ cv.voti }}</p>
-					</section>
-					
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.formazione_extra }}</h2>
-						<div class="courses-container">
-							{% for corso in cv.corsi_formazione %}
-							<div class="course-card">
-								<div class="course-header">
-									<h3 class="typewriter">{{ corso.titolo }}</h3>
-									<span class="badge-accent typewriter">{{ corso.periodo }}</span>
-								</div>
-								<p class="typewriter" style="margin-bottom: 5px;"><strong>{{ labels.ente }}:</strong> {{ corso.ente }}</p>
-								<p class="typewriter">{{ corso.descrizione }}</p>
-								
-								<div class="skills-tags" style="margin: 10px 0;">
-									{% for tech in corso.competenze %}
-									<span class="tag typewriter">{{ tech }}</span>
-									{% endfor %}
-								</div>
-								
-								<div style="margin-top: 12px;">
-									<a href="{{ url_for('static', filename='pdf/' ~ corso.diploma.file) }}" target="_blank" class="btn-pdf typewriter">
-										<i class="fa-solid fa-file-pdf"></i> {{ corso.diploma.nome }}
-									</a>
-								</div>
-							</div>
-							{% endfor %}
-						</div>
-					</section>
-
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.competenze }}</h2>
-						<div class="skills-tags">
-							{% for comp in cv.competenze %}
-							<span class="tag typewriter">{{ comp }}</span>
-							{% endfor %}
-						</div>
-					</section>
-					
-					<section class="card liquid-glass">
-						<h2 class="typewriter">{{ labels.sport }}</h2>
-						<p class="typewriter"><strong>{{ labels.atleta }}:</strong></p>
-						<ul class="styled-list">
-							{% for risultato in cv.sport %}
-							<li class="typewriter">{{ risultato }}</li>
-							{% endfor %}
-						</ul>
-					</section>
-
-				</main>
+{% block content %}
+	<div class="main-layout">
+		<aside class="sidebar liquid-glass">
+			<div class="lang-switcher">
+				{% for l in langs %}
+				<a href="{{ url_for('home', lang=l) }}" data-lang="{{ l }}" class="{% if current_lang == l %}active{% endif %}">{{ l|upper }}</a>
+				{% endfor %}
 			</div>
 
-			<script>
-				document.addEventListener("DOMContentLoaded", function() {
-					const sections = document.querySelectorAll('.content-area section, .sidebar');
-					const speed = 15;
+			<div class="profile-frame">
+				<div class="avatar-placeholder">
+					<span>LF</span>
+				</div>
+			</div>
 
-					const allTypewriters = document.querySelectorAll('.typewriter');
+			<h1 class="typewriter">{{ cv.nome }}</h1>
+			<p class="subtitle typewriter">{{ labels.occupazione }}</p>
 
-					allTypewriters.forEach(el => {
-						el.dataset.originalHtml = el.innerHTML;
-						el.style.visibility = 'hidden';
-					});
+			<div class="contatti-box">
+				<p class="typewriter">{{ cv.citta }}</p>
+				<p class="typewriter"><a href="tel:{{ cv.telefono }}">{{ cv.telefono }}</a></p>
+				<p class="typewriter"><a href="mailto:{{ cv.email }}">{{ cv.email }}</a></p>
+			</div>
 
-					sections.forEach(section => {
-						const elements = section.querySelectorAll('.typewriter');
-						let elementIndex = 0;
+			<div class="contatti-box" style="margin-top: 15px;">
+				{% for s in cv.social %}
+				<p class="typewriter">
+					<i class="{{ s.icona_class }}"></i>
+					<a href="{{ s.url }}" target="_blank" rel="noopener noreferrer">{{ s.nome }}</a>
+				</p>
+				{% endfor %}
+			</div>
+		</aside>
 
-						function typeNextElement() {
-							if (elementIndex >= elements.length) return;
+		<main class="content-area">
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.profilo }}</h2>
+				<p class="typewriter">{{ cv.profilo }}</p>
+			</section>
 
-							const el = elements[elementIndex];
-							const fullHTML = el.dataset.originalHtml;
-							
-							const cursor = document.createElement('span');
-							cursor.className = 'typewriter-cursor';
-							
-							el.innerHTML = '';
-							el.style.visibility = 'visible';
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.lingue }}</h2>
+				<div class="languages-grid">
+					{% for l in cv.lingue %}
+					<div class="progetto-item">
+						<div class="language-header">
+							<span class="language-name typewriter"><strong>{{ l.lingua }}</strong></span>
+							<span class="language-level badge-accent typewriter">{{ l.livello }}</span>
+						</div>
+						<p class="language-detail typewriter">{{ l.dettaglio }}</p>
+					</div>
+					{% endfor %}
+				</div>
+			</section>
+
+			{# ---------- Pubblicazioni: le ultime 3 ---------- #}
+			<section class="card liquid-glass section-publications">
+				<div class="section-head">
+					<h2 class="typewriter">{{ labels_publications.titolo_pagina }}</h2>
+					<a href="{{ url_for('publications', lang=current_lang) }}" class="btn-see-all typewriter">
+						{{ labels_publications.button }} <i class="fa-solid fa-arrow-right"></i>
+					</a>
+				</div>
+
+				{% if publications %}
+				<div class="progetti-grid">
+					{% for pub in publications %}
+					<div class="progetto-item">
+						<h3 class="typewriter"><a href="{{ url_for('publications', lang=current_lang) }}">{% if pub.in_evidenza %}<i class="fa-solid fa-star pub-star"></i> {% endif %}{{ pub.titolo }}</a></h3>
+						<p class="typewriter"><i class="{{ pub.sede_icona }}"></i> {{ pub.sede }}{% if pub.anno %} · {{ pub.anno }}{% endif %}</p>
+					</div>
+					{% endfor %}
+				</div>
+				{% else %}
+				<p class="typewriter">{{ labels_publications.vuoto }}</p>
+				{% endif %}
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.progetti }}</h2>
+				<div class="progetti-grid">
+					{% for progetto in cv.progetti %}
+					<div class="progetto-item">
+						<h3 class="typewriter"><a href="{{ url_for('dettaglio_progetto', lang=current_lang, id_progetto=progetto.id) }}">{{ progetto.titolo }}</a></h3>
+						<p class="typewriter">{{ progetto.descrizione_breve }}</p>
+						<a class="link-dettaglio" href="{{ url_for('dettaglio_progetto', lang=current_lang, id_progetto=progetto.id) }}">
+							{{ labels.vedi_dettaglio }}
+						</a>
+					</div>
+					{% endfor %}
+				</div>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.competizioni }}</h2>
+				<ul class="styled-list">
+					{% for gara in cv.competizioni %}
+					<li class="typewriter">{{ gara }}</li>
+					{% endfor %}
+				</ul>
+			</section>
+
+			{# ---------- Achievement Microsoft Learn: gli ultimi 3 ---------- #}
+			<section class="card liquid-glass section-achievements">
+				<div class="section-head">
+					<div>
+						<h2 class="typewriter"><i class="fa-brands fa-microsoft"></i> {{ labels_achievements.titolo_pagina }}</h2>
+						<p class="section-sub typewriter">{{ labels_achievements.sottotitolo }}</p>
+					</div>
+					<a href="{{ url_for('achievements', lang=current_lang) }}" class="btn-see-all typewriter">
+						{{ labels_achievements.button }} <i class="fa-solid fa-arrow-right"></i>
+					</a>
+				</div>
+
+				<div class="achievements-preview-row">
+					{% for item in achievements %}
+					<div class="achievement-card liquid-glass">
+						<div class="badge-header">
+							<span class="official-tag typewriter">
+								<i class="fa-brands fa-microsoft"></i> {{ labels_achievements.ufficiale_badge }}
+							</span>
+							<span class="badge-date typewriter">{{ item.data }}</span>
+						</div>
+
+						<div class="badge-body">
+							<div class="badge-icon-wrapper">
+								<i class="fa-brands {{ item.badge_icon }}"></i>
+							</div>
+							<h3 class="achievement-title typewriter">{{ item.titolo }}</h3>
+							<span class="achievement-category typewriter">{{ item.categoria }}</span>
+						</div>
+
+						<div class="badge-footer">
+							<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
+								{{ labels_achievements.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+							</a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</section>
+
+			{# ---------- Certificazioni raggruppate ---------- #}
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.certificazioni }}</h2>
+				{% for gruppo in cv.certificazioni_gruppi %}
+				<h3 class="cert-group-title typewriter">{{ gruppo.titolo }}</h3>
+				<ul class="certificazioni-list">
+					{% for cert in gruppo.elenco %}
+					<li>
+						<div class="cert-info">
+							<strong class="typewriter">{{ cert.nome }}</strong>
+							<span class="cert-ente typewriter">— {{ cert.ente }}</span>
+						</div>
+						{% if cert.pdf %}
+						<a href="{{ url_for('static', filename='pdf/' + cert.pdf) }}" target="_blank" class="badge-pdf">
+							Report PDF
+						</a>
+						{% endif %}
+					</li>
+					{% endfor %}
+				</ul>
+				{% endfor %}
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.istruzione }}</h2>
+				<p class="scuola-titolo typewriter"><strong>{{ cv.istruzione }}</strong></p>
+				<p class="scuola-voti typewriter">{{ labels.profitto }}: {{ cv.voti }}</p>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.formazione_extra }}</h2>
+				<div class="courses-container">
+					{% for corso in cv.corsi_formazione %}
+					<div class="course-card">
+						<div class="course-header">
+							<h3 class="typewriter">{{ corso.titolo }}</h3>
+							<span class="badge-accent typewriter">{{ corso.periodo }}</span>
+						</div>
+						<p class="typewriter" style="margin-bottom: 5px;"><strong>{{ labels.ente }}:</strong> {{ corso.ente }}</p>
+						<p class="typewriter">{{ corso.descrizione }}</p>
+
+						<div class="skills-tags" style="margin: 10px 0;">
+							{% for tech in corso.competenze %}
+							<span class="tag typewriter">{{ tech }}</span>
+							{% endfor %}
+						</div>
+
+						<div style="margin-top: 12px;">
+							<a href="{{ url_for('static', filename='pdf/' ~ corso.diploma.file) }}" target="_blank" class="btn-pdf typewriter">
+								<i class="fa-solid fa-file-pdf"></i> {{ corso.diploma.nome }}
+							</a>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.competenze }}</h2>
+				<div class="skills-tags">
+					{% for comp in cv.competenze %}
+					<span class="tag typewriter">{{ comp }}</span>
+					{% endfor %}
+				</div>
+			</section>
+
+			<section class="card liquid-glass">
+				<h2 class="typewriter">{{ labels.sport }}</h2>
+				<p class="typewriter"><strong>{{ labels.atleta }}:</strong></p>
+				<ul class="styled-list">
+					{% for risultato in cv.sport %}
+					<li class="typewriter">{{ risultato }}</li>
+					{% endfor %}
+				</ul>
+			</section>
+
+		</main>
+	</div>
+{% endblock %}
+
+{% block scripts %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const sections = document.querySelectorAll('.content-area section, .sidebar');
+			const speed = 15;
+
+			const allTypewriters = document.querySelectorAll('.typewriter');
+
+			allTypewriters.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			sections.forEach(section => {
+				const elements = section.querySelectorAll('.typewriter');
+				let elementIndex = 0;
+
+				function typeNextElement() {
+					if (elementIndex >= elements.length) return;
+
+					const el = elements[elementIndex];
+					const fullHTML = el.dataset.originalHtml;
+
+					const cursor = document.createElement('span');
+					cursor.className = 'typewriter-cursor';
+
+					el.innerHTML = '';
+					el.style.visibility = 'visible';
+					el.appendChild(cursor);
+
+					let charIndex = 0;
+					let isTag = false;
+					let currentHTML = '';
+
+					function typeChar() {
+						if (charIndex < fullHTML.length) {
+							let char = fullHTML.charAt(charIndex);
+
+							if (char === '<') isTag = true;
+							currentHTML += char;
+							if (char === '>') isTag = false;
+
+							el.innerHTML = currentHTML;
 							el.appendChild(cursor);
 
-							let charIndex = 0;
-							let isTag = false;
-							let currentHTML = '';
+							charIndex++;
 
-							function typeChar() {
-								if (charIndex < fullHTML.length) {
-									let char = fullHTML.charAt(charIndex);
-
-									if (char === '<') isTag = true;
-									currentHTML += char;
-									if (char === '>') isTag = false;
-
-									el.innerHTML = currentHTML;
-									el.appendChild(cursor);
-									
-									charIndex++;
-
-									if (isTag) {
-										typeChar();
-									} else {
-										setTimeout(typeChar, speed);
-									}
-								} else {
-									el.innerHTML = fullHTML;
-									elementIndex++;
-									setTimeout(typeNextElement, 20);
-								}
+							if (isTag) {
+								typeChar();
+							} else {
+								setTimeout(typeChar, speed);
 							}
-
-							typeChar();
+						} else {
+							el.innerHTML = fullHTML;
+							elementIndex++;
+							setTimeout(typeNextElement, 20);
 						}
+					}
 
-						typeNextElement();
-					});
-				});
-			</script>
-    </body>
-</html>
+					typeChar();
+				}
+
+				typeNextElement();
+			});
+		});
+	</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 import os
 import shutil
 from flask_frozen import Freezer
-from app import app, LANGUAGES_MAP, LANGUAGES_MAP_PROGETTI
+from app import app, LANGS, PROJECTS
 
 if os.path.exists('build'):
     shutil.rmtree('build')
@@ -14,19 +14,24 @@ freezer = Freezer(app)
 
 @freezer.register_generator
 def home():
-    for lang in LANGUAGES_MAP.keys():
+    for lang in LANGS:
         yield 'home', {'lang': lang}
 
 @freezer.register_generator
 def dettaglio_progetto():
-    for lang, progetti_dict in LANGUAGES_MAP_PROGETTI.items():
-        for id_progetto in progetti_dict.keys():
+    for lang in LANGS:
+        for id_progetto in PROJECTS.keys():
             yield 'dettaglio_progetto', {'lang': lang, 'id_progetto': id_progetto}
+
+@freezer.register_generator
+def achievements():
+    for lang in LANGS:
+        yield 'achievements', {'lang': lang}
 
 @freezer.register_generator
 def publications():
     # Generata sempre, anche se la lista PUBLICATIONS e' vuota
-    for lang in LANGUAGES_MAP.keys():
+    for lang in LANGS:
         yield 'publications', {'lang': lang}
 
 def genera_404_statica():

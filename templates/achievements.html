@@ -1,58 +1,58 @@
-<!DOCTYPE html>
-<html lang="{{ current_lang }}">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>{{ labels.titolo_pagina }}</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-<body class="body-achievements">
+{% extends "base.html" %}
 
-	<main class="container py-5">
-		<header class="text-center mb-5">
+{% block title %}{{ labels.titolo_pagina }} - {{ cv.nome }}{% endblock %}
+
+{% block content %}
+	<main class="page-narrow">
+		<header class="page-header">
 			<h1 class="page-title typewriter"><i class="fa-brands fa-microsoft"></i> {{ labels.titolo_pagina }}</h1>
 			<p class="page-subtitle typewriter">{{ labels.sottotitolo }}</p>
-		</header>
-		
-		<div class="text-center mt-5">
 			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back typewriter">
 				<i class="fa-solid fa-arrow-left"></i> Home
 			</a>
-		</div>
+		</header>
 
-		<div class="achievements-grid">
-			{% for item in achievements %}
-			<div class="achievement-card liquid-glass">
-				<div class="badge-header">
-					<span class="official-tag typewriter">
-						<i class="fa-brands fa-microsoft"></i> {{ labels.ufficiale_badge }}
-					</span>
-					<span class="badge-date typewriter">{{ item.data }}</span>
-				</div>
+		{# Gruppi per categoria: il gruppo col badge piu' recente e' in cima #}
+		{% for g in groups %}
+		<details class="achv-group" open>
+			<summary class="achv-group-title">
+				<i class="fa-brands {{ g.icona }}"></i>
+				<span class="achv-group-name">{{ g.nome }}</span>
+				<span class="achv-count">{{ g.elenco|length }}</span>
+			</summary>
 
-				<div class="badge-body">
-					<div class="badge-icon-wrapper">
-						<i class="fa-brands {{ item.badge_icon }} badge-icon typewriter"></i>
+			<div class="achievements-grid">
+				{% for item in g.elenco %}
+				<div class="achievement-card liquid-glass">
+					<div class="badge-header">
+						<span class="official-tag typewriter">
+							<i class="fa-brands fa-microsoft"></i> {{ labels.ufficiale_badge }}
+						</span>
+						<span class="badge-date typewriter">{{ item.data }}</span>
 					</div>
-					<h2 class="achievement-title typewriter">{{ item.titolo }}</h2>
-					<span class="achievement-category typewriter">{{ item.categoria }}</span>
-				</div>
 
-				<div class="badge-footer">
-					<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
-						{{ labels.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
-					</a>
+					<div class="badge-body">
+						<div class="badge-icon-wrapper">
+							<i class="fa-brands {{ item.badge_icon }}"></i>
+						</div>
+						<h2 class="achievement-title typewriter">{{ item.titolo }}</h2>
+						<span class="achievement-category typewriter">{{ item.categoria }}</span>
+					</div>
+
+					<div class="badge-footer">
+						<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
+							{{ labels.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+						</a>
+					</div>
 				</div>
+				{% endfor %}
 			</div>
-			{% endfor %}
-		</div>
-
+		</details>
+		{% endfor %}
 	</main>
-	
+{% endblock %}
+
+{% block scripts %}
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
 			const speed = 15;
@@ -70,10 +70,10 @@
 
 				const el = elements[elementIndex];
 				const fullHTML = el.dataset.originalHtml;
-				
+
 				const cursor = document.createElement('span');
 				cursor.className = 'typewriter-cursor';
-				
+
 				el.innerHTML = '';
 				el.style.visibility = 'visible';
 				el.appendChild(cursor);
@@ -92,7 +92,7 @@
 
 						el.innerHTML = currentHTML;
 						el.appendChild(cursor);
-						
+
 						charIndex++;
 
 						if (isTag) {
@@ -113,5 +113,4 @@
 			typeNextElement();
 		});
 	</script>
-</body>
-</html>
+{% endblock %}
