@@ -4,7 +4,42 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="color-scheme" content="light dark">
+	<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f4e8c1">
+	<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14110d">
 	<title>{% block title %}{{ cv.nome }}{% endblock %}</title>
+
+	{# ---------- Descrizione, indicizzazione, anteprima di condivisione ---------- #}
+	{% set desc = (page_desc|default(''))|striptags|truncate(180, False, '…') %}
+	{% if desc %}<meta name="description" content="{{ desc }}">{% endif %}
+	{% if noindex %}<meta name="robots" content="noindex">{% endif %}
+	{% if seo.canonical and not noindex %}
+	<link rel="canonical" href="{{ seo.canonical }}">
+	{% for code, url in seo.alternates %}
+	<link rel="alternate" hreflang="{{ code }}" href="{{ url }}">
+	{% endfor %}
+	{% if seo.alternates %}<link rel="alternate" hreflang="x-default" href="{{ seo.x_default }}">{% endif %}
+
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="{{ seo.site_name }}">
+	<meta property="og:title" content="{{ self.title()|trim }}">
+	{% if desc %}<meta property="og:description" content="{{ desc }}">{% endif %}
+	<meta property="og:url" content="{{ seo.canonical }}">
+	<meta property="og:locale" content="{{ seo.locale }}">
+	<meta property="og:image" content="{{ seo.og_image }}">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:alt" content="{{ seo.site_name }} - Portfolio">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="{{ self.title()|trim }}">
+	{% if desc %}<meta name="twitter:description" content="{{ desc }}">{% endif %}
+	<meta name="twitter:image" content="{{ seo.og_image }}">
+	{% endif %}
+
+	{# ---------- Favicon ---------- #}
+	<link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+	<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" sizes="32x32">
+	<link rel="apple-touch-icon" href="{{ url_for('static', filename='apple-touch-icon.png') }}">
+
 	<script>
 		/* Tema e lingua: eseguito subito, prima del disegno della pagina (niente "flash") */
 		(function () {
@@ -49,10 +84,27 @@
 				try { localStorage.setItem('theme', next); } catch (e) {}
 			});
 
-			/* Ricorda l'ultima lingua scelta con i pulsanti IT/EN/ES/DE/FR */
 			document.addEventListener('click', function (e) {
-				var a = e.target.closest ? e.target.closest('[data-lang]') : null;
+				if (!e.target.closest) { return; }
+
+				/* Ricorda l'ultima lingua scelta con i pulsanti IT/EN/ES/DE/FR */
+				var a = e.target.closest('[data-lang]');
 				if (a) { try { localStorage.setItem('lang', a.getAttribute('data-lang')); } catch (err) {} }
+
+				/* Contatti: email e telefono (base64 nell'HTML) compaiono solo dopo il click */
+				var b = e.target.closest('.contact-reveal');
+				if (b) {
+					e.preventDefault();
+					try {
+						var link = document.createElement('a');
+						link.className = 'contact-link';
+						link.href = atob(b.getAttribute('data-h'));
+						var icon = b.querySelector('i');
+						if (icon) { link.appendChild(icon.cloneNode(true)); }
+						link.appendChild(document.createTextNode(' ' + atob(b.getAttribute('data-v'))));
+						b.replaceWith(link);
+					} catch (err) {}
+				}
 			});
 		})();
 	</script>

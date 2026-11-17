@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
+{% set page_desc = labels.sottotitolo %}
 {% block title %}{{ labels.titolo_pagina }} - {{ cv.nome }}{% endblock %}
 
 {% block content %}
 	<main class="page-narrow">
 		<header class="page-header">
-			<h1 class="page-title typewriter"><i class="fa-brands fa-microsoft"></i> {{ labels.titolo_pagina }}</h1>
+			<h1 class="page-title typewriter"><i class="fa-solid fa-award"></i> {{ labels.titolo_pagina }}</h1>
 			<p class="page-subtitle typewriter">{{ labels.sottotitolo }}</p>
 			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back typewriter">
 				<i class="fa-solid fa-arrow-left"></i> Home
@@ -16,34 +17,34 @@
 		{% for g in groups %}
 		<details class="achv-group" open>
 			<summary class="achv-group-title">
-				<i class="fa-brands {{ g.icona }}"></i>
+				<i class="{{ g.icona }}"></i>
 				<span class="achv-group-name">{{ g.nome }}</span>
 				<span class="achv-count">{{ g.elenco|length }}</span>
 			</summary>
 
 			<div class="achievements-grid">
 				{% for item in g.elenco %}
-				<div class="achievement-card liquid-glass">
+				<div class="achievement-card liquid-glass{% if item.in_corso %} is-in-corso{% endif %}">
 					<div class="badge-header">
-						<span class="official-tag typewriter">
-							<i class="fa-brands fa-microsoft"></i> {{ labels.ufficiale_badge }}
-						</span>
-						<span class="badge-date typewriter">{{ item.data }}</span>
+						<span class="official-tag typewriter"><i class="{{ item.ente_icona }}"></i> {{ item.ente_nome }}</span>
+						{% if item.in_corso %}<span class="badge-status">{{ labels.in_corso }}</span>{% elif item.data %}<span class="badge-date typewriter">{{ item.data }}</span>{% endif %}
 					</div>
 
 					<div class="badge-body">
 						<div class="badge-icon-wrapper">
-							<i class="fa-brands {{ item.badge_icon }}"></i>
+							<i class="{{ item.badge_icon }}"></i>
 						</div>
 						<h2 class="achievement-title typewriter">{{ item.titolo }}</h2>
 						<span class="achievement-category typewriter">{{ item.categoria }}</span>
 					</div>
 
+					{% if item.link %}
 					<div class="badge-footer">
-						<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter">
-							{{ labels.bottone_verifica }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+						<a href="{{ item.link }}" target="_blank" rel="noopener noreferrer" class="btn-verify typewriter" title="{{ labels.ufficiale_badge }}">
+							{{ labels.bottone_verifica }} {{ item.ente_nome }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
 						</a>
 					</div>
+					{% endif %}
 				</div>
 				{% endfor %}
 			</div>

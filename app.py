@@ -7,12 +7,20 @@
 #    - se manca una lingua si usa l'inglese, poi l'italiano
 #  La funzione t(valore, lingua) risolve tutto in automatico, anche dentro liste e dizionari.
 # =============================================================
+import base64
+import re
+import unicodedata
+
 from flask import Flask, render_template, abort, redirect, url_for, request
 
 app = Flask(__name__)
 
 LANGS = ["it", "en", "es", "de", "fr"]
 DEFAULT_LANG = "en"
+
+# Indirizzo pubblico del sito (serve per anteprime di condivisione, canonical e hreflang)
+SITE_URL = "https://fusarilorenzo.github.io"
+OG_LOCALES = {"it": "it_IT", "en": "en_US", "es": "es_ES", "de": "de_DE", "fr": "fr_FR"}
 
 
 def t(value, lang):
@@ -151,6 +159,20 @@ LABELS = {
             "es": "Certificaciones de Idiomas",
             "de": "Sprachzertifikate",
             "fr": "Certifications Linguistiques"
+        },
+        "mostra_email": {
+            "it": "Mostra email",
+            "en": "Show email",
+            "es": "Mostrar email",
+            "de": "E-Mail anzeigen",
+            "fr": "Afficher l'e-mail"
+        },
+        "mostra_telefono": {
+            "it": "Mostra telefono",
+            "en": "Show phone",
+            "es": "Mostrar teléfono",
+            "de": "Telefon anzeigen",
+            "fr": "Afficher le téléphone"
         }
     },
     "progetti": {
@@ -192,32 +214,39 @@ LABELS = {
     },
     "achievements": {
         "titolo_pagina": {
-            "it": "Achievement Microsoft Learn",
-            "en": "Microsoft Learn Achievements",
-            "es": "Logros de Microsoft Learn",
-            "de": "Microsoft Learn Erfolge",
-            "fr": "Réussites Microsoft Learn"
+            "it": "Badge e Percorsi Formativi",
+            "en": "Badges & Learning Paths",
+            "es": "Insignias y Rutas de Aprendizaje",
+            "de": "Badges & Lernpfade",
+            "fr": "Badges & Parcours de Formation"
         },
         "sottotitolo": {
-            "it": "Certificazioni e traguardi formativi riconosciuti ufficialmente da Microsoft.",
-            "en": "Certifications and learning milestones officially recognized by Microsoft.",
-            "es": "Certificaciones y logros de aprendizaje reconocidos oficialmente por Microsoft.",
-            "de": "Offiziell von Microsoft anerkannte Zertifizierungen und Lernerfolge.",
-            "fr": "Certifications et étapes d'apprentissage officiellement reconnues par Microsoft."
+            "it": "Badge digitali verificabili e percorsi formativi, completati o in corso, su Microsoft Learn, IBM SkillsBuild e altre piattaforme.",
+            "en": "Verifiable digital badges and learning paths, completed or in progress, on Microsoft Learn, IBM SkillsBuild and other platforms.",
+            "es": "Insignias digitales verificables y rutas de aprendizaje, completadas o en curso, en Microsoft Learn, IBM SkillsBuild y otras plataformas.",
+            "de": "Verifizierbare digitale Badges und Lernpfade, abgeschlossen oder in Bearbeitung, auf Microsoft Learn, IBM SkillsBuild und weiteren Plattformen.",
+            "fr": "Badges numériques vérifiables et parcours de formation, terminés ou en cours, sur Microsoft Learn, IBM SkillsBuild et d'autres plateformes."
         },
         "bottone_verifica": {
-            "it": "Vedi su Microsoft Learn",
-            "en": "View on Microsoft Learn",
-            "es": "Ver en Microsoft Learn",
-            "de": "Auf Microsoft Learn ansehen",
-            "fr": "Voir sur Microsoft Learn"
+            "it": "Vedi su",
+            "en": "View on",
+            "es": "Ver en",
+            "de": "Ansehen auf",
+            "fr": "Voir sur"
         },
         "ufficiale_badge": {
-            "it": "Badge Ufficiale Microsoft",
-            "en": "Official Microsoft Badge",
-            "es": "Insignia Oficial de Microsoft",
-            "de": "Offizielles Microsoft-Badge",
-            "fr": "Badge Officiel Microsoft"
+            "it": "Badge ufficiale",
+            "en": "Official badge",
+            "es": "Insignia oficial",
+            "de": "Offizielles Badge",
+            "fr": "Badge officiel"
+        },
+        "in_corso": {
+            "it": "In corso",
+            "en": "In progress",
+            "es": "En curso",
+            "de": "In Bearbeitung",
+            "fr": "En cours"
         },
         "button": {
             "it": "Vedi Tutti",
@@ -290,6 +319,41 @@ LABELS = {
             "es": "Destacado",
             "de": "Hervorgehoben",
             "fr": "À la une"
+        },
+        "tutte": {
+            "it": "Tutte",
+            "en": "All",
+            "es": "Todas",
+            "de": "Alle",
+            "fr": "Toutes"
+        },
+        "filtra_sede": {
+            "it": "Filtra per sede",
+            "en": "Filter by venue",
+            "es": "Filtrar por sede",
+            "de": "Nach Ort filtern",
+            "fr": "Filtrer par lieu"
+        },
+        "cita": {
+            "it": "Cita",
+            "en": "Cite",
+            "es": "Citar",
+            "de": "Zitieren",
+            "fr": "Citer"
+        },
+        "copia": {
+            "it": "Copia",
+            "en": "Copy",
+            "es": "Copiar",
+            "de": "Kopieren",
+            "fr": "Copier"
+        },
+        "copiato": {
+            "it": "Copiato!",
+            "en": "Copied!",
+            "es": "¡Copiado!",
+            "de": "Kopiert!",
+            "fr": "Copié !"
         }
     },
     "404": {
@@ -358,32 +422,111 @@ CV = {
     },
     "competenze": [
         {
-            "it": "Programmazione Full-Stack",
-            "en": "Full-Stack Programming",
-            "es": "Programación Full-Stack",
-            "de": "Full-Stack-Programmierung",
-            "fr": "Programmation Full-Stack"
+            "titolo": {
+                "it": "Aree di competenza",
+                "en": "Areas of Expertise",
+                "es": "Áreas de competencia",
+                "de": "Kompetenzbereiche",
+                "fr": "Domaines de compétence"
+            },
+            "voci": [
+                {
+                    "it": "Programmazione Full-Stack",
+                    "en": "Full-Stack Programming",
+                    "es": "Programación Full-Stack",
+                    "de": "Full-Stack-Programmierung",
+                    "fr": "Programmation Full-Stack"
+                },
+                {
+                    "it": "Sviluppo App Mobile",
+                    "en": "Mobile App Development",
+                    "es": "Desarrollo de Apps Móviles",
+                    "de": "Mobile App-Entwicklung",
+                    "fr": "Développement d'Apps Mobiles"
+                },
+                {
+                    "it": "Sviluppo Web",
+                    "en": "Web Development",
+                    "es": "Desarrollo Web",
+                    "de": "Webentwicklung",
+                    "fr": "Développement Web"
+                },
+                {
+                    "it": "Pacchetto Office",
+                    "en": "Microsoft Office Suite",
+                    "es": "Paquete Office",
+                    "de": "Microsoft Office-Paket",
+                    "fr": "Suite Microsoft Office"
+                }
+            ]
         },
         {
-            "it": "Sviluppo App Mobile",
-            "en": "Mobile App Development",
-            "es": "Desarrollo de Apps Móviles",
-            "de": "Mobile App-Entwicklung",
-            "fr": "Développement d'Apps Mobiles"
+            "titolo": {
+                "it": "Linguaggi di programmazione",
+                "en": "Programming Languages",
+                "es": "Lenguajes de programación",
+                "de": "Programmiersprachen",
+                "fr": "Langages de programmation"
+            },
+            "voci": [
+                "Python",
+                "JavaScript",
+                "Swift",
+                "Kotlin",
+                "C#",
+                "HTML5/CSS3"
+            ]
         },
         {
-            "it": "Sviluppo Web",
-            "en": "Web Development",
-            "es": "Desarrollo Web",
-            "de": "Webentwicklung",
-            "fr": "Développement Web"
+            "titolo": {
+                "it": "Framework e piattaforme",
+                "en": "Frameworks & Platforms",
+                "es": "Frameworks y plataformas",
+                "de": "Frameworks & Plattformen",
+                "fr": "Frameworks & plateformes"
+            },
+            "voci": [
+                "Flask",
+                "SwiftUI",
+                "Jetpack Compose",
+                "Firebase",
+                "WordPress",
+                "Pygame"
+            ]
         },
         {
-            "it": "Pacchetto Office",
-            "en": "Microsoft Office Suite",
-            "es": "Paquete Office",
-            "de": "Microsoft Office-Paket",
-            "fr": "Suite Microsoft Office"
+            "titolo": {
+                "it": "API, automazione e strumenti",
+                "en": "APIs, Automation & Tools",
+                "es": "APIs, automatización y herramientas",
+                "de": "APIs, Automatisierung & Werkzeuge",
+                "fr": "API, automatisation & outils"
+            },
+            "voci": [
+                "REST API",
+                "Google Apps Script",
+                "Discord Bot API",
+                "Git & GitHub"
+            ]
+        },
+        {
+            "titolo": {
+                "it": "AI e ricerca",
+                "en": "AI & Research",
+                "es": "IA e investigación",
+                "de": "KI & Forschung",
+                "fr": "IA & recherche"
+            },
+            "voci": [
+                {
+                    "it": "Teachable Machine (AI)",
+                    "en": "Teachable Machine (AI)",
+                    "es": "Teachable Machine (AI)",
+                    "de": "Teachable Machine (KI)",
+                    "fr": "Teachable Machine (IA)"
+                },
+                "State Space Models (SSM)"
+            ]
         }
     ],
     "competizioni": [
@@ -834,9 +977,22 @@ PROJECTS = {
 
 
 # -------------------------------------------------------------
-#  ACHIEVEMENT MICROSOFT LEARN
-#  "data": anno ("2026") oppure data completa ("2026-03-14"); piu' e' precisa,
-#  piu' e' giusto l'ordine "ultimi 3" in home. Il primo della lista vince a parita' di data.
+#  BADGE E PERCORSI FORMATIVI  (Microsoft Learn, IBM SkillsBuild, ...)
+#  Ogni voce e' un dizionario dentro ACHIEVEMENTS_DATA. Campi:
+#    id          identificativo univoco
+#    titolo      nome del badge / percorso
+#    categoria   raggruppa le voci in pagina (es. "GitHub", "IBM SkillsBuild")
+#    ente        chiave di ENTI qui sotto: "microsoft" (default se manca), "ibm", ...
+#    badge_icon  icona Font Awesome: "fa-github" (brand) oppure classe completa "fa-solid fa-award"
+#    stato       OPZIONALE: "in_corso" per un percorso non ancora finito (etichetta "In corso",
+#                sale in cima al suo gruppo, non entra negli "ultimi 3" della home). Manca = completato
+#    data        OPZIONALE: anno ("2026") o data completa ("2026-03-14")
+#    link        OPZIONALE per i percorsi in corso; se c'e' compare il pulsante "Vedi su <ente>"
+#  L'ordine della lista conta: a parita' di data il primo e' il piu' recente.
+#
+#  ESEMPI da copiare dentro la lista:
+#    {"id": "i01", "titolo": "Nome del corso", "ente": "ibm", "badge_icon": "fa-solid fa-award", "categoria": "IBM SkillsBuild", "data": "2026-11", "link": "https://..."},
+#    {"id": "i02", "titolo": "Corso non ancora finito", "ente": "ibm", "badge_icon": "fa-solid fa-award", "categoria": "IBM SkillsBuild", "stato": "in_corso"},
 # -------------------------------------------------------------
 ACHIEVEMENTS_DATA = [
     {"id": "t01", "titolo": "GitHub Foundations 2 of 2", "badge_icon": "fa-github", "categoria": "GitHub Learning Paths", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/9AK44T9U?sharingId=B2FB6AE8EAE1BC15"},
@@ -862,6 +1018,13 @@ ACHIEVEMENTS_DATA = [
     {"id": "b18", "titolo": "Write your first C# code", "badge_icon": "fa-microsoft", "categoria": "Microsoft C# Code Language", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/EGF3AHZP?sharingId=B2FB6AE8EAE1BC15"},
 ]
 
+# Enti / piattaforme: nome mostrato e icona. Per aggiungerne uno basta una riga.
+ENTI = {
+    "microsoft": {"nome": "Microsoft Learn", "icona": "fa-brands fa-microsoft"},
+    "ibm": {"nome": "IBM SkillsBuild", "icona": "fa-solid fa-award"},
+}
+DEFAULT_ENTE = "microsoft"
+
 # -------------------------------------------------------------
 #  PUBBLICAZIONI  -  qui aggiungi / modifichi tu i dati
 # -------------------------------------------------------------
@@ -881,7 +1044,10 @@ ACHIEVEMENTS_DATA = [
 #    pdf           OPZIONALE, nome di un file in static/pdf/
 #    descrizione   dict lingua -> testo (it, en, es, de, fr). Lingua mancante: si usa en, poi it.
 #    tag           OPZIONALE, lista di parole chiave
-#    in_evidenza   OPZIONALE, True = in home compare per prima, in grande, con il badge "In evidenza"
+#    in_evidenza   OPZIONALE, True = stellina sul titolo; nelle 3 anteprime della home compare per prima
+#    citazione     OPZIONALE, {"apa": "...", "bibtex": "..."} per sostituire le citazioni generate in automatico
+#                  (APA e BibTeX si costruiscono da autori, anno, titolo, sede e DOI; "autori" va scritto
+#                  "Nome Cognome, Nome Cognome")
 #
 #  TEMPLATE:
 #  {
@@ -952,9 +1118,24 @@ def get_cv(lang):
     return cv
 
 
+def _achievement(a):
+    """Arricchisce una voce di ACHIEVEMENTS_DATA con ente, icona completa e stato."""
+    item = dict(a)
+    chiave = item.get("ente", DEFAULT_ENTE)
+    ente = ENTI.get(chiave, {"nome": str(chiave).title(), "icona": "fa-solid fa-award"})
+    icona = item.get("badge_icon") or ente["icona"]
+    item["badge_icon"] = icona if " " in icona else "fa-brands " + icona
+    item["ente_nome"] = ente["nome"]
+    item["ente_icona"] = ente["icona"]
+    item["in_corso"] = item.get("stato") == "in_corso"
+    return item
+
+
 def get_achievements():
-    """Dal piu' recente. A parita' di data resta l'ordine della lista (primo = piu' recente)."""
-    return sorted(ACHIEVEMENTS_DATA, key=lambda a: a.get("data", ""), reverse=True)
+    """Gli "in corso" prima, poi dal piu' recente. A parita' di data resta l'ordine della lista."""
+    items = [_achievement(a) for a in ACHIEVEMENTS_DATA]
+    items.sort(key=lambda a: (a["in_corso"], a.get("data", "")), reverse=True)
+    return items
 
 
 def get_achievement_groups():
@@ -962,6 +1143,79 @@ def get_achievement_groups():
     for a in get_achievements():
         groups.setdefault(a["categoria"], []).append(a)
     return [{"nome": nome, "icona": items[0]["badge_icon"], "elenco": items} for nome, items in groups.items()]
+
+
+def _slug(text):
+    text = unicodedata.normalize("NFKD", str(text)).encode("ascii", "ignore").decode()
+    return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-") or "altro"
+
+
+def _authors(raw):
+    raw = str(raw or "")
+    separatore = ";" if ";" in raw else ","
+    return [p.strip() for p in re.split(separatore + r"|\s+and\s+", raw) if p.strip()]
+
+
+def _name(full):
+    """'Mario Rossi' -> ('Rossi', 'Mario'); 'Mario De Rossi' -> ('De Rossi', 'Mario')"""
+    particelle = {"de", "di", "da", "del", "della", "dei", "degli", "dal", "dalla", "lo", "la", "le", "van", "von", "der", "den", "dos", "das"}
+    bits = full.split()
+    if len(bits) < 2:
+        return full, ""
+    i = len(bits) - 1
+    while i > 1 and bits[i - 1].lower() in particelle:
+        i -= 1
+    return " ".join(bits[i:]), " ".join(bits[:i])
+
+
+def _cite_url(item):
+    return ("https://doi.org/" + item["doi"]) if item.get("doi") else item.get("link", "")
+
+
+def _cite_apa(item):
+    autori = []
+    for a in _authors(item.get("autori")):
+        cognome, nome = _name(a)
+        iniziali = " ".join(p[0].upper() + "." for p in re.split(r"[\s-]+", nome) if p)
+        autori.append(cognome + (", " + iniziali if iniziali else ""))
+    if len(autori) > 1:
+        autori_txt = ", ".join(autori[:-1]) + ", & " + autori[-1]
+    else:
+        autori_txt = autori[0] if autori else ""
+    titolo = str(item.get("titolo", "")).strip()
+    pezzi = [
+        (autori_txt + " " if autori_txt else "") + "(" + str(item.get("anno") or "n.d.") + ").",
+        titolo if titolo[-1:] in ".?!" else titolo + ".",
+    ]
+    if item.get("sede"):
+        pezzi.append(str(item["sede"]) + ".")
+    if _cite_url(item):
+        pezzi.append(_cite_url(item))
+    return " ".join(pezzi)
+
+
+def _bib_escape(text):
+    return re.sub(r"([&%_#$])", r"\\\1", str(text))
+
+
+def _cite_bibtex(item):
+    nomi = []
+    for a in _authors(item.get("autori")):
+        cognome, nome = _name(a)
+        nomi.append(cognome + (", " + nome if nome else ""))
+    primo = _slug(_name(_authors(item.get("autori"))[0])[0]).replace("-", "") if nomi else "anon"
+    parola = (re.findall(r"[A-Za-z0-9]+", str(item.get("titolo", ""))) or ["pub"])[0].lower()
+    chiave = primo + str(item.get("anno", "")) + parola
+    campi = [
+        ("author", " and ".join(nomi)),
+        ("title", "{" + _bib_escape(item.get("titolo", "")) + "}"),
+        ("year", item.get("anno", "")),
+        ("publisher", _bib_escape(item.get("sede", ""))),
+        ("doi", item.get("doi", "")),
+        ("url", _cite_url(item)),
+    ]
+    righe = ["  %-9s = {%s}" % (k, v) for k, v in campi if v]
+    return "@misc{" + chiave + ",\n" + ",\n".join(righe) + "\n}"
 
 
 def get_publications(lang):
@@ -973,10 +1227,34 @@ def get_publications(lang):
             item["link"] = "https://doi.org/" + item["doi"]
         sede = str(item.get("sede", "")).lower()
         item["sede_icona"] = next((icon for key, icon in VENUE_ICONS.items() if key in sede), DEFAULT_VENUE_ICON)
+        item["sede_slug"] = _slug(item.get("sede", ""))
+        manuale = item.get("citazione") or {}
+        item["cite_apa"] = manuale.get("apa") or _cite_apa(item)
+        item["cite_bibtex"] = manuale.get("bibtex") or _cite_bibtex(item)
         item.setdefault("tag", [])
         result.append(item)
     result.sort(key=lambda p: str(p.get("anno", "")), reverse=True)
     return result
+
+
+def get_sedi(pubs):
+    """Sedi distinte (in ordine di comparsa) con il numero di pubblicazioni: servono ai filtri."""
+    sedi = {}
+    for p in pubs:
+        s_ = sedi.setdefault(p["sede_slug"], {"slug": p["sede_slug"], "nome": p.get("sede", ""), "icona": p["sede_icona"], "n": 0})
+        s_["n"] += 1
+    return list(sedi.values())
+
+
+@app.template_filter("b64")
+def _b64(value):
+    """Codifica un testo in base64: email e telefono non compaiono in chiaro nell'HTML."""
+    return base64.b64encode(str(value).encode("utf-8")).decode("ascii")
+
+
+@app.template_filter("tel")
+def _tel(value):
+    return re.sub(r"[^\d+]", "", str(value))
 
 
 def render_home(lang, is_root=False):
@@ -989,7 +1267,7 @@ def render_home(lang, is_root=False):
         labels=get_labels("home", lang),
         current_lang=lang,
         is_root=is_root,
-        achievements=get_achievements()[:3],
+        achievements=[a for a in get_achievements() if not a["in_corso"]][:3],
         labels_achievements=get_labels("achievements", lang),
         publications=anteprima[:3],
         labels_publications=get_labels("publications", lang),
@@ -997,10 +1275,25 @@ def render_home(lang, is_root=False):
 
 
 @app.context_processor
-def inject_ui():
-    parts = request.path.strip('/').split('/')
+def inject_common():
+    parts = [p for p in request.path.strip('/').split('/') if p]
     lang = parts[0] if parts and parts[0] in LANGS else DEFAULT_LANG
-    return {"ui": get_labels("ui", lang), "langs": LANGS}
+    seo = {
+        "site_name": CV["nome"],
+        "locale": OG_LOCALES[lang],
+        "og_image": SITE_URL + "/static/og-image.png",
+        "x_default": SITE_URL + "/",
+        "canonical": None,
+        "alternates": [],
+    }
+    if request.endpoint in ("home_default", "home", "dettaglio_progetto", "achievements", "publications"):
+        if request.endpoint == "home_default":
+            seo["canonical"] = SITE_URL + "/en/"
+        else:
+            resto = "/".join(parts[1:])
+            seo["canonical"] = SITE_URL + "/" + "/".join(parts) + "/"
+            seo["alternates"] = [(l, SITE_URL + "/" + l + "/" + (resto + "/" if resto else "")) for l in LANGS]
+    return {"ui": get_labels("ui", lang), "langs": LANGS, "seo": seo}
 
 
 @app.route('/')
@@ -1036,7 +1329,8 @@ def achievements(lang):
 def publications(lang):
     if lang not in LANGS:
         return redirect(url_for('publications', lang=DEFAULT_LANG))
-    return render_template('publications.html', publications=get_publications(lang), cv=get_cv(lang), labels=get_labels("publications", lang), current_lang=lang)
+    pubs = get_publications(lang)
+    return render_template('publications.html', publications=pubs, sedi=get_sedi(pubs), cv=get_cv(lang), labels=get_labels("publications", lang), current_lang=lang)
 
 
 @app.errorhandler(404)

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% set page_desc = labels.sottotitolo %}
 {% block title %}{{ labels.titolo_pagina }} - {{ cv.nome }}{% endblock %}
 
 {% block content %}
@@ -12,10 +13,20 @@
 			</a>
 		</header>
 
+		{# ---------- Filtro per sede (compare solo con almeno 2 sedi diverse) ---------- #}
+		{% if sedi|length > 1 %}
+		<div class="pub-filter" role="group" aria-label="{{ labels.filtra_sede }}">
+			<button type="button" class="chip is-active" data-filter="all" aria-pressed="true">{{ labels.tutte }} <span class="chip-count">{{ publications|length }}</span></button>
+			{% for s in sedi %}
+			<button type="button" class="chip" data-filter="{{ s.slug }}" aria-pressed="false"><i class="{{ s.icona }}"></i> {{ s.nome }} <span class="chip-count">{{ s.n }}</span></button>
+			{% endfor %}
+		</div>
+		{% endif %}
+
 		{% if publications %}
 		<div class="pub-list">
 			{% for pub in publications %}
-			<article class="pub-card liquid-glass{% if pub.in_evidenza %} is-featured{% endif %}">
+			<article class="pub-card liquid-glass{% if pub.in_evidenza %} is-featured{% endif %}" data-sede="{{ pub.sede_slug }}">
 				<div class="pub-meta">
 					<span class="pub-meta-left">
 						{% if pub.in_evidenza %}<span class="pub-badge-featured typewriter"><i class="fa-solid fa-star"></i> {{ labels.in_evidenza }}</span>{% endif %}
@@ -42,7 +53,6 @@
 				</div>
 				{% endif %}
 
-				{% if pub.link or pub.pdf %}
 				<div class="pub-actions">
 					{% if pub.link %}
 					<a href="{{ pub.link }}" target="_blank" rel="noopener noreferrer" class="btn-pub typewriter">
@@ -54,8 +64,23 @@
 						<i class="fa-solid fa-file-pdf"></i> {{ labels.bottone_pdf }}
 					</a>
 					{% endif %}
+					<button type="button" class="btn-pdf btn-cite" aria-expanded="false">
+						<i class="fa-solid fa-quote-right"></i> {{ labels.cita }}
+					</button>
 				</div>
-				{% endif %}
+
+				{# ---------- Pannello citazione: APA / BibTeX + copia ---------- #}
+				<div class="pub-cite" hidden>
+					<div class="pub-cite-tabs" role="group">
+						<button type="button" class="chip is-active" data-fmt="apa" aria-pressed="true">APA</button>
+						<button type="button" class="chip" data-fmt="bibtex" aria-pressed="false">BibTeX</button>
+					</div>
+					<pre class="pub-cite-text" data-fmt="apa">{{ pub.cite_apa }}</pre>
+					<pre class="pub-cite-text" data-fmt="bibtex" hidden>{{ pub.cite_bibtex }}</pre>
+					<button type="button" class="btn-pdf btn-copy" data-copied="{{ labels.copiato }}">
+						<i class="fa-regular fa-copy"></i> <span>{{ labels.copia }}</span>
+					</button>
+				</div>
 			</article>
 			{% endfor %}
 		</div>
@@ -67,6 +92,81 @@
 {% endblock %}
 
 {% block scripts %}
+	<script>
+		/* Filtro per sede + pannello "Cita" (APA / BibTeX) con copia negli appunti */
+		(function () {
+			var cards = document.querySelectorAll('.pub-card');
+			var chips = document.querySelectorAll('.pub-filter [data-filter]');
+
+			function applyFilter(f) {
+				cards.forEach(function (c) { c.hidden = !(f === 'all' || c.getAttribute('data-sede') === f); });
+				chips.forEach(function (b) {
+					var on = b.getAttribute('data-filter') === f;
+					b.classList.toggle('is-active', on);
+					b.setAttribute('aria-pressed', on ? 'true' : 'false');
+				});
+			}
+
+			function copyText(text, done) {
+				if (navigator.clipboard && navigator.clipboard.writeText) {
+					navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+				} else { fallback(text, done); }
+			}
+			function fallback(text, done) {
+				var ta = document.createElement('textarea');
+				ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+				document.body.appendChild(ta); ta.select();
+				try { document.execCommand('copy'); done(); } catch (e) {}
+				document.body.removeChild(ta);
+			}
+
+			document.addEventListener('click', function (e) {
+				if (!e.target.closest) { return; }
+
+				var f = e.target.closest('.pub-filter [data-filter]');
+				if (f) {
+					var val = f.getAttribute('data-filter');
+					applyFilter(val);
+					try { history.replaceState(null, '', val === 'all' ? location.pathname + location.search : '#' + val); } catch (err) {}
+					return;
+				}
+
+				var cite = e.target.closest('.btn-cite');
+				if (cite) {
+					var panel = cite.closest('.pub-card').querySelector('.pub-cite');
+					panel.hidden = !panel.hidden;
+					cite.setAttribute('aria-expanded', panel.hidden ? 'false' : 'true');
+					return;
+				}
+
+				var tab = e.target.closest('.pub-cite-tabs [data-fmt]');
+				if (tab) {
+					var box = tab.closest('.pub-cite');
+					var fmt = tab.getAttribute('data-fmt');
+					box.querySelectorAll('.pub-cite-tabs [data-fmt]').forEach(function (b) {
+						var on = b === tab; b.classList.toggle('is-active', on); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+					});
+					box.querySelectorAll('.pub-cite-text').forEach(function (p) { p.hidden = p.getAttribute('data-fmt') !== fmt; });
+					return;
+				}
+
+				var copy = e.target.closest('.btn-copy');
+				if (copy) {
+					var pre = copy.closest('.pub-cite').querySelector('.pub-cite-text:not([hidden])');
+					var label = copy.querySelector('span'), old = label.textContent;
+					copyText(pre.textContent, function () {
+						label.textContent = copy.getAttribute('data-copied');
+						setTimeout(function () { label.textContent = old; }, 1800);
+					});
+				}
+			});
+
+			/* indirizzo con #sede (es. /it/publications/#unibo) apre gia' il filtro */
+			var h = location.hash.replace('#', '');
+			if (h && document.querySelector('.pub-filter [data-filter="' + h.replace(/[^a-z0-9-]/g, '') + '"]')) { applyFilter(h); }
+		})();
+	</script>
+
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
 			const speed = 10;

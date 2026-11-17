@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+{% set page_desc = progetto.descrizione_breve %}
 {% block title %}{{ progetto.titolo }} - {{ labels.scheda_dettaglio }}{% endblock %}
 
 {% block content %}
