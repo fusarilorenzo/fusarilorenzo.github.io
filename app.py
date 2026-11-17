@@ -222,18 +222,6 @@ progetti_dettaglio_it = {
 			"Ottimizzazione SEO on-page per motori di ricerca"
 		]
 	},
-	"sito-matrimonio": {
-		"id": "sito-matrimonio",
-		"titolo": "Sito Web per Matrimonio",
-		"categoria": "Sviluppo Web App Full-Stack",
-		"ruolo": "Web Developer & Designer",
-		"tecnologie": ["HTML5/CSS3", "JavaScript", "Python3.13", "Flask"],
-		"descrizione_completa": "Realizzazione di una web app personalizzata su commissione per un matrimonio. Il sito include due pagine, una per la lingua italiana e una per la lingua francese, in maniera da ricoprire tutti gli invitati con meno fatica possibile. Il sito richiama il tema del matrimonio con i font e la grafica dello sfondo descritta nel CSS. Il testo viene estratto da dei file .txt presenti nei file locali del progetto. Le lettere vengono 'scritte' da una bandiera pirata generata e gestita da uno script JavaScript posto al termine del file HTML.",
-		"funzionalita": [
-			"Design adattabile a tutti i dispositivi",
-			"Header in contrasto con il corpo del sito"
-		]
-	}
 }
 
 progetti_dettaglio_en = {
@@ -264,18 +252,6 @@ progetti_dettaglio_en = {
             "On-page SEO optimization for search engines"
         ]
     },
-    "sito-matrimonio": {
-		"id": "sito-matrimonio",
-		"titolo": "Wedding Web App",
-		"categoria": "Full-Stack Web App Development",
-		"ruolo": "Web Developer & Designer",
-		"tecnologie": ["HTML5/CSS3", "JavaScript", "Python3.13", "Flask"],
-		"descrizione_completa": "Creation of a custom commissioned web application for a wedding. The site features two language pages (Italian and French) to accommodate all guests seamlessly. The design aligns with the wedding's pirate theme through custom typography and background styling in CSS. Content is dynamically read from local .txt files. Text is rendered using a animated 'writing' pirate flag effect generated and managed by a JavaScript script placed at the bottom of the HTML document.",
-		"funzionalita": [
-			"Fully responsive design across all devices",
-			"High-contrast header styling relative to the main body"
-		]
-	}
 }
 
 progetti_dettaglio_es = {
@@ -306,18 +282,6 @@ progetti_dettaglio_es = {
             "Optimización SEO on-page para motores de búsqueda"
         ]
     },
-    "sito-matrimonio": {
-		"id": "sito-matrimonio",
-		"titolo": "Aplicación Web para Boda",
-		"categoria": "Desarrollo Web App Full-Stack",
-		"ruolo": "Diseñador y Desarrollador Web",
-		"tecnologie": ["HTML5/CSS3", "JavaScript", "Python3.13", "Flask"],
-		"descrizione_completa": "Creación de una aplicación web personalizada por encargo para una boda. El sitio incluye dos páginas (una en italiano y otra en francés) para atender fácilmente a todos los invitados. La interfaz refleja el tema pirata de la boda mediante tipografías y estilos de fondo en CSS. El contenido de texto se extrae de archivos .txt locales del proyecto. Los textos se visualizan con un efecto de 'escritura' mediante una bandera pirata generada y controlada por un script en JavaScript ubicado al final del archivo HTML.",
-		"funzionalita": [
-			"Diseño adaptable a todo tipo de dispositivos",
-			"Encabezado en contraste visual con el cuerpo de la página"
-		]
-	}
 }
 
 progetti_dettaglio_de = {
@@ -348,18 +312,6 @@ progetti_dettaglio_de = {
             "On-Page-SEO-Optimierung für Suchmaschinen"
         ]
     },
-    "sito-matrimonio": {
-		"id": "sito-matrimonio",
-		"titolo": "Hochzeits-Web-App",
-		"categoria": "Full-Stack-Webanwendungsentwicklung",
-		"ruolo": "Webentwickler & Designer",
-		"tecnologie": ["HTML5/CSS3", "JavaScript", "Python3.13", "Flask"],
-		"descrizione_completa": "Erstellung einer maßgeschneiderten Webanwendung im Auftrag für eine Hochzeit. Die Website umfasst zwei Sprachseiten (Italienisch und Französisch), um alle Gäste problemlos zu erreichen. Das Design spiegelt das Piraten-Motto der Hochzeit durch spezielle Schriftarten und Hintergrundgrafiken im CSS wider. Die Textinhalte werden aus lokalen .txt-Dateien des Projekts ausgelesen. Der Text wird mit einem dynamischen 'Schreib-Effekt' durch eine Piratenflagge dargestellt, die von einem JavaScript-Skript am Ende der HTML-Datei gesteuert wird.",
-		"funzionalita": [
-			"Anpassungsfähiges Design für alle Endgeräte",
-			"Kontrastreicher Header im Vergleich zum Hauptbereich"
-		]
-	}
 }
 
 progetti_dettaglio_fr = {
@@ -390,18 +342,6 @@ progetti_dettaglio_fr = {
             "Optimisation SEO on-page pour les moteurs de recherche"
         ]
     },
-    "sito-matrimonio": {
-		"id": "sito-matrimonio",
-		"titolo": "Application Web de Mariage",
-		"categoria": "Développement Web App Full-Stack",
-		"ruolo": "Développeur Web & Designer",
-		"tecnologie": ["HTML5/CSS3", "JavaScript", "Python3.13", "Flask"],
-		"descrizione_completa": "Réalisation d'une application web sur mesure pour un mariage. Le site comprend deux pages (une en italien et une en français) afin d'accueillir facilement tous les invités. Le style visuel rappelle le thème des pirates grâce à des polices personnalisées et des graphismes d'arrière-plan en CSS. Les textes sont extraits de fichiers .txt locaux. L'affichage du texte simule une écriture générée par un drapeau pirate, piloté par un script JavaScript placé en bas du fichier HTML.",
-		"funzionalita": [
-			"Design adaptable à tous les types d'écrans",
-			"En-tête en contraste visuel avec le corps de la page"
-		]
-	}
 }
 
 cv_data_it = {
@@ -446,11 +386,6 @@ cv_data_it = {
 			"titolo": "Sito Web su Comissione",
 			"descrizione_breve": "Realizzazione di un sito web strutturato su commissione per cliente privato."
 		},
-		{
-			"id": "sito-matrimonio",
-			"titolo": "Sito Web per Matrimonio",
-			"descrizione_breve": "Realizzazione di un sito web in Flask per un matrimonio a tema pirati."
-		}
 	],
 	"social": [
 		{"nome": "GitHub", "url": "https://github.com/fusarilorenzo", "icona_class": "fa-brands fa-github"},
@@ -532,11 +467,6 @@ cv_data_en = {
             "titolo": "Custom Freelance Website",
             "descrizione_breve": "Full end-to-end design and deployment of a responsive website commissioned by a private client."
         },
-        {
-			"id": "sito-matrimonio",
-			"titolo": "Wedding Website",
-			"descrizione_breve": "Development of a Flask web platform for a pirate-themed wedding."
-		}
     ],
     "social": cv_data_it["social"],
     "lingue": [
@@ -612,11 +542,6 @@ cv_data_es = {
             "titolo": "Sitio Web por Encargo",
             "descrizione_breve": "Desarrollo completo de un sitio web estructurado por encargo para un cliente privado."
         },
-        {
-			"id": "sito-matrimonio",
-			"titolo": "Sitio Web de Boda",
-			"descrizione_breve": "Desarrollo de un sitio web en Flask para una boda con temática pirata."
-		}
     ],
     "social": cv_data_it["social"],
     "lingue": [
@@ -692,11 +617,6 @@ cv_data_de = {
             "titolo": "Auftrags-Website",
             "descrizione_breve": "Erstellung einer strukturierten Website im Auftrag eines privaten Kunden."
         },
-        {
-			"id": "sito-matrimonio",
-			"titolo": "Hochzeits-Website",
-			"descrizione_breve": "Erstellung einer Flask-Webanwendung für eine Hochzeit im Piraten-Stil."
-		}
     ],
     "social": cv_data_it["social"],
     "lingue": [
@@ -772,11 +692,6 @@ cv_data_fr = {
             "titolo": "Site Web Sur Mesure",
             "descrizione_breve": "Réalisation complète d'un site web structuré sur commande pour un client privé."
         },
-        {
-			"id": "sito-matrimonio",
-			"titolo": "Site Web de Mariage",
-			"descrizione_breve": "Création d'un site web en Flask pour un mariagesur le thème des pirates."
-		}
     ],
     "social": cv_data_it["social"],
     "lingue": [
@@ -834,6 +749,153 @@ ACHIEVEMENTS_DATA = [
 	{"id": "b18", "titolo": "Write your first C# code", "badge_icon": "fa-microsoft", "categoria": "Microsoft C# Code Language", "data": "2026", "link": "https://learn.microsoft.com/api/achievements/share/en-us/LorenzoFusari-0956/EGF3AHZP?sharingId=B2FB6AE8EAE1BC15"}
 ]
 
+# ============================================================
+#  PUBBLICAZIONI  -  qui aggiungi / modifichi tu i dati
+# ============================================================
+#
+#  Ogni pubblicazione e' un dizionario dentro la lista PUBLICATIONS.
+#  Per aggiungerne una: usa il TEMPLATE qui sotto
+#
+#  Campi:
+#    id           identificativo breve, univoco (solo per tuo riferimento)
+#    titolo       titolo della pubblicazione (di solito non si traduce)
+#    anno         anno, es. "2026"  (l'ordine in pagina e' dal piu' recente)
+#    tipo         "Articolo", "Preprint", "Dataset", "Poster"...  (stringa oppure dict per lingua)
+#    autori       stringa, es. "Lorenzo Fusari, Mario Rossi"
+#    sede         rivista / repository / conferenza, es. "Zenodo"
+#    doi          OPZIONALE, es. "10.5281/zenodo.1234567"  (genera anche il link https://doi.org/...)
+#    link         OPZIONALE, URL della pagina della pubblicazione (se manca ma c'e' il doi, usa il doi)
+#    pdf          OPZIONALE, nome di un file messo in static/pdf/  (es. "articolo.pdf")
+#    descrizione  dizionario lingua -> testo. Lingue: it, en, es, de, fr
+#                 Se una lingua manca, viene usata en, poi it, poi la prima disponibile.
+#    tag          OPZIONALE, lista di parole chiave
+#
+#  Qualsiasi campo testuale (tipo, sede, titolo...) puo' essere una stringa semplice
+#  oppure un dizionario {"it": "...", "en": "..."} se vuoi tradurlo.
+#
+#  TEMPLATE (copia da qui):
+#
+#  {
+#      "id": "mia-pubblicazione",
+#      "titolo": "Titolo della pubblicazione",
+#      "anno": "2026",
+#      "tipo": {"it": "Articolo", "en": "Article", "es": "Artículo", "de": "Artikel", "fr": "Article"},
+#      "autori": "Lorenzo Fusari",
+#      "sede": "Zenodo",
+#      "doi": "10.5281/zenodo.0000000",
+#      "link": "https://zenodo.org/records/0000000",
+#      "pdf": "mia_pubblicazione.pdf",
+#      "descrizione": {
+#          "it": "Descrizione in italiano.",
+#          "en": "Description in English.",
+#          "es": "Descripción en español.",
+#          "de": "Beschreibung auf Deutsch.",
+#          "fr": "Description en français.",
+#      },
+#      "tag": ["Python", "Informatica"],
+#  },
+
+PUBLICATIONS = [
+    {
+		"id": "sub-quadratic1",
+		"titolo": "Sub-Quadratic O(N) Context Scaling via Vectorized Selective State Space Models",
+		"anno": "2026",
+        "tipo": {"it": "Articolo", "en": "Article", "es": "Artículo", "de": "Artikel", "fr": "Article"},
+        "autori": "Lorenzo Fusari",
+        "sede": "Zenodo",
+        "doi": "10.5281/zenodo.23195265",
+        "link": "https://zenodo.org/records/23195265",
+        "pdf": "sub-quadratic1.pdf",
+        "descrizione": {
+            "en": "Theoretical Foundations, hardware Kernels, Empirical Apple Silicon Benchmarks, and Extreme Scaling Horizons to Library-Scale (~800B Tokens)"
+        },
+        "tag": ["Python", "AI", "SSMs"],
+    },
+]
+
+LABELS_PUBLICATIONS = {
+    "it": {
+        "titolo_pagina": "Pubblicazioni",
+        "sottotitolo": "Articoli, preprint e lavori pubblicati.",
+        "button": "Vedi Tutte",
+        "autori": "Autori",
+        "sede": "Pubblicato su",
+        "bottone_apri": "Apri pubblicazione",
+        "bottone_pdf": "Scarica PDF",
+        "vuoto": "Nessuna pubblicazione disponibile al momento.",
+    },
+    "en": {
+        "titolo_pagina": "Publications",
+        "sottotitolo": "Articles, preprints and published work.",
+        "button": "View All",
+        "autori": "Authors",
+        "sede": "Published in",
+        "bottone_apri": "Open publication",
+        "bottone_pdf": "Download PDF",
+        "vuoto": "No publications available yet.",
+    },
+    "es": {
+        "titolo_pagina": "Publicaciones",
+        "sottotitolo": "Artículos, preprints y trabajos publicados.",
+        "button": "Ver Todas",
+        "autori": "Autores",
+        "sede": "Publicado en",
+        "bottone_apri": "Abrir publicación",
+        "bottone_pdf": "Descargar PDF",
+        "vuoto": "Aún no hay publicaciones disponibles.",
+    },
+    "de": {
+        "titolo_pagina": "Veröffentlichungen",
+        "sottotitolo": "Artikel, Preprints und veröffentlichte Arbeiten.",
+        "button": "Alle Anzeigen",
+        "autori": "Autoren",
+        "sede": "Veröffentlicht in",
+        "bottone_apri": "Veröffentlichung öffnen",
+        "bottone_pdf": "PDF herunterladen",
+        "vuoto": "Noch keine Veröffentlichungen verfügbar.",
+    },
+    "fr": {
+        "titolo_pagina": "Publications",
+        "sottotitolo": "Articles, prépublications et travaux publiés.",
+        "button": "Tout Voir",
+        "autori": "Auteurs",
+        "sede": "Publié dans",
+        "bottone_apri": "Ouvrir la publication",
+        "bottone_pdf": "Télécharger le PDF",
+        "vuoto": "Aucune publication disponible pour le moment.",
+    },
+}
+
+
+# ------------------------------------------------------------
+#  Logica: trasforma PUBLICATIONS in una lista "piatta" per lingua
+# ------------------------------------------------------------
+def _localize(value, lang):
+    """Stringa -> com'e'. Dizionario -> testo nella lingua, con fallback en > it > primo."""
+    if isinstance(value, dict):
+        for code in (lang, "en", "it"):
+            if value.get(code):
+                return value[code]
+        return next((v for v in value.values() if v), "")
+    return value
+
+
+def get_publications(lang):
+    """Restituisce le pubblicazioni gia' tradotte in `lang`, dalla piu' recente."""
+    result = []
+    for pub in PUBLICATIONS:
+        item = {key: _localize(value, lang) for key, value in pub.items()}
+
+        doi = item.get("doi")
+        if not item.get("link") and doi:
+            item["link"] = "https://doi.org/" + doi
+
+        item.setdefault("tag", [])
+        result.append(item)
+
+    result.sort(key=lambda p: str(p.get("anno", "")), reverse=True)
+    return result
+
 LANGUAGES_MAP = {
 	"it": cv_data_it,
 	"en": cv_data_en,
@@ -856,7 +918,7 @@ def home_default():
 	label_selezionato = LABELS_HOME.get('en', LABELS_HOME['en'])
 	achievements_preview = ACHIEVEMENTS_DATA[:3]
 	label_achievements = LABELS_ACHIEVEMENTS['en']
-	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en', achievements=achievements_preview, labels_achievements=label_achievements)
+	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang='en', achievements=achievements_preview, labels_achievements=label_achievements, publications=get_publications('en')[:3], labels_publications=LABELS_PUBLICATIONS['en'])
 
 @app.route('/<lang>/')
 def home(lang):
@@ -867,7 +929,7 @@ def home(lang):
 	label_selezionato = LABELS_HOME.get(lang, LABELS_HOME['en'])
 	achievements_preview = ACHIEVEMENTS_DATA[:3]
 	label_achievements = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
-	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang=lang, achievements=achievements_preview, labels_achievements=label_achievements)
+	return render_template('index.html', cv=cv_selezionato, labels=label_selezionato, current_lang=lang, achievements=achievements_preview, labels_achievements=label_achievements, publications=get_publications(lang)[:3], labels_publications=LABELS_PUBLICATIONS.get(lang, LABELS_PUBLICATIONS['en']))
 
 @app.route('/<lang>/progetto/<id_progetto>/')
 def dettaglio_progetto(lang, id_progetto):
@@ -892,6 +954,16 @@ def achievements(lang):
 	labels = LABELS_ACHIEVEMENTS.get(lang, LABELS_ACHIEVEMENTS['en'])
 	
 	return render_template('achievements.html', achievements=ACHIEVEMENTS_DATA, cv=cv_selezionato, labels=labels, current_lang=lang)
+
+@app.route('/<lang>/publications/')
+def publications(lang):
+	if lang not in LANGUAGES_MAP:
+		return redirect(url_for('publications', lang='en'))
+
+	cv_selezionato = LANGUAGES_MAP[lang]
+	labels = LABELS_PUBLICATIONS.get(lang, LABELS_PUBLICATIONS['en'])
+
+	return render_template('publications.html', publications=get_publications(lang), cv=cv_selezionato, labels=labels, current_lang=lang)
 
 @app.errorhandler(404)
 def page_not_found(e):

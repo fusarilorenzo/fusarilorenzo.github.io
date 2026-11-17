@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ current_lang }}">
     <head>
         <meta charset="UTF-8">
@@ -134,6 +134,28 @@
 							</div>
 						</div>
 					</section>
+
+					<section class="card liquid-glass">
+						<div class="section-head">
+							<h2 class="typewriter">{{ labels_publications.titolo_pagina }}</h2>
+							<a href="{{ url_for('publications', lang=current_lang) }}" class="btn-see-all typewriter">
+								{{ labels_publications.button }} <i class="fa-solid fa-arrow-right"></i>
+							</a>
+						</div>
+						{% if publications %}
+						<div class="progetti-grid">
+							{% for pub in publications %}
+							<div class="progetto-item">
+								<h3 class="typewriter"><a href="{{ url_for('publications', lang=current_lang) }}">{{ pub.titolo }}</a></h3>
+								<p class="typewriter">{{ pub.anno }}{% if pub.sede %} · {{ pub.sede }}{% endif %}</p>
+							</div>
+							{% endfor %}
+						</div>
+						{% else %}
+						<p class="typewriter">{{ labels_publications.vuoto }}</p>
+						{% endif %}
+					</section>
+
 
 					<section class="card liquid-glass">
 						<h2 class="typewriter">{{ labels.certificazioni }}</h2>

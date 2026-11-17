@@ -23,6 +23,12 @@ def dettaglio_progetto():
         for id_progetto in progetti_dict.keys():
             yield 'dettaglio_progetto', {'lang': lang, 'id_progetto': id_progetto}
 
+@freezer.register_generator
+def publications():
+    # Generata sempre, anche se la lista PUBLICATIONS e' vuota
+    for lang in LANGUAGES_MAP.keys():
+        yield 'publications', {'lang': lang}
+
 def genera_404_statica():
     with app.test_client() as client:
         response = client.get('/en/non-esiste')

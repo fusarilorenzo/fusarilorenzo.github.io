@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ labels.titolo_pagina }} - {{ cv.nome }}</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+	<main class="pub-page">
+		<header class="pub-header">
+			<h1 class="pub-page-title typewriter"><i class="fa-solid fa-book-open"></i> {{ labels.titolo_pagina }}</h1>
+			<p class="pub-page-subtitle typewriter">{{ labels.sottotitolo }}</p>
+			<a href="{{ url_for('home', lang=current_lang) }}" class="btn-back typewriter">
+				<i class="fa-solid fa-arrow-left"></i> Home
+			</a>
+		</header>
+
+		{% if publications %}
+		<div class="pub-list">
+			{% for pub in publications %}
+			<article class="pub-card liquid-glass">
+				<div class="pub-meta">
+					{% if pub.tipo %}<span class="pub-type typewriter">{{ pub.tipo }}</span>{% endif %}
+					{% if pub.anno %}<span class="pub-year typewriter">{{ pub.anno }}</span>{% endif %}
+				</div>
+
+				<h2 class="pub-title typewriter">{{ pub.titolo }}</h2>
+
+				<p class="pub-authors typewriter">
+					{% if pub.autori %}<strong>{{ labels.autori }}:</strong> {{ pub.autori }}{% endif %}
+					{% if pub.sede %}<br><strong>{{ labels.sede }}:</strong> {{ pub.sede }}{% endif %}
+					{% if pub.doi %}<br><strong>DOI:</strong> {{ pub.doi }}{% endif %}
+				</p>
+
+				{% if pub.descrizione %}
+				<p class="pub-description typewriter">{{ pub.descrizione }}</p>
+				{% endif %}
+
+				{% if pub.tag %}
+				<div class="skills-tags pub-tags">
+					{% for t in pub.tag %}<span class="tag typewriter">{{ t }}</span>{% endfor %}
+				</div>
+				{% endif %}
+
+				{% if pub.link or pub.pdf %}
+				<div class="pub-actions">
+					{% if pub.link %}
+					<a href="{{ pub.link }}" target="_blank" rel="noopener noreferrer" class="btn-pub typewriter">
+						{{ labels.bottone_apri }} <i class="fa-solid fa-arrow-up-right-from-square"></i>
+					</a>
+					{% endif %}
+					{% if pub.pdf %}
+					<a href="{{ url_for('static', filename='pdf/' ~ pub.pdf) }}" target="_blank" class="btn-pdf typewriter">
+						<i class="fa-solid fa-file-pdf"></i> {{ labels.bottone_pdf }}
+					</a>
+					{% endif %}
+				</div>
+				{% endif %}
+			</article>
+			{% endfor %}
+		</div>
+		{% else %}
+		<p class="pub-empty liquid-glass">{{ labels.vuoto }}</p>
+		{% endif %}
+
+	</main>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			const speed = 10;
+			const elements = document.querySelectorAll('.typewriter');
+
+			elements.forEach(el => {
+				el.dataset.originalHtml = el.innerHTML;
+				el.style.visibility = 'hidden';
+			});
+
+			let elementIndex = 0;
+
+			function typeNextElement() {
+				if (elementIndex >= elements.length) return;
+
+				const el = elements[elementIndex];
+				const fullHTML = el.dataset.originalHtml;
+
+				const cursor = document.createElement('span');
+				cursor.className = 'typewriter-cursor';
+
+				el.innerHTML = '';
+				el.style.visibility = 'visible';
+				el.appendChild(cursor);
+
+				let charIndex = 0;
+				let isTag = false;
+				let currentHTML = '';
+
+				function typeChar() {
+					if (charIndex < fullHTML.length) {
+						let char = fullHTML.charAt(charIndex);
+
+						if (char === '<') isTag = true;
+						currentHTML += char;
+						if (char === '>') isTag = false;
+
+						el.innerHTML = currentHTML;
+						el.appendChild(cursor);
+
+						charIndex++;
+
+						if (isTag) {
+							typeChar();
+						} else {
+							setTimeout(typeChar, speed);
+						}
+					} else {
+						el.innerHTML = fullHTML;
+						elementIndex++;
+						setTimeout(typeNextElement, 20);
+					}
+				}
+
+				typeChar();
+			}
+
+			typeNextElement();
+		});
+	</script>
+</body>
+</html>

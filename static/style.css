@@ -584,3 +584,125 @@ h2 {
 	color: #33b5f5;
 	transform: translateX(3px);
 }
+
+/* ---------- Pubblicazioni ---------- */
+.pub-page {
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+.pub-header {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.pub-page-title {
+	font-size: 2rem;
+	font-weight: 700;
+	letter-spacing: -0.5px;
+}
+
+.pub-page-subtitle {
+	color: var(--text-muted);
+	margin-top: 6px;
+}
+
+.pub-list {
+	display: flex;
+	flex-direction: column;
+	gap: 22px;
+}
+
+.pub-card {
+	padding: 26px 30px;
+}
+
+.pub-meta {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.pub-type {
+	padding: 3px 10px;
+	background: rgba(2, 132, 199, 0.12);
+	color: var(--primary-accent);
+	border: 1px solid rgba(2, 132, 199, 0.3);
+	border-radius: 12px;
+}
+
+.pub-year {
+	color: var(--text-muted);
+}
+
+.pub-title {
+	border-bottom: none;
+	padding-bottom: 0;
+	margin-bottom: 8px;
+	font-size: 1.3rem;
+}
+
+.pub-authors {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+	margin-bottom: 12px;
+}
+
+.pub-description {
+	margin-bottom: 14px;
+}
+
+.pub-tags {
+	margin-bottom: 14px;
+}
+
+.pub-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-top: 6px;
+}
+
+.btn-pub {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 14px;
+	background-color: var(--primary-accent);
+	color: #fff;
+	border-radius: 8px;
+	text-decoration: none;
+	font-size: 0.85rem;
+	font-weight: 600;
+	transition: background 0.2s;
+}
+
+.btn-pub:hover {
+	background-color: #026aa2;
+}
+
+.pub-empty {
+	padding: 30px;
+	text-align: center;
+	color: var(--text-muted);
+}
+
+.section-head {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.section-head h2 {
+	flex: 1;
+}
+
+.section-head .btn-see-all {
+	margin-top: 0;
+}
